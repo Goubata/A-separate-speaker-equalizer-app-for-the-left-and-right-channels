@@ -18,6 +18,7 @@ A system-wide equalizer for Android that can apply a **separate EQ to the earpie
 - **Automatic bypass for headphones** – when wired, USB or Bluetooth audio output is connected the EQ is released; it is re-applied when you are back on the built-in speakers.
 - **Auto-start after reboot** (and after an app update), with a shortcut to the battery-optimization exemption.
 - **Presets** – save/load named EQ curves for whichever speaker you are editing.
+- **Combined presets** – save the earpiece EQ and the bottom-speaker EQ (plus their on/off state) as one preset and apply both with one tap.
 - **Backup / transfer** – export/import settings and presets as JSON (file or clipboard). Old `eq.xml` files can be imported too.
 - **Quick Settings tile**, test tones (per speaker, with or without EQ) and an on-screen diagnostic log.
 - **English / Japanese UI** – Japanese if the device language is Japanese, English otherwise.
@@ -71,7 +72,9 @@ A system-wide equalizer for Android that can apply a **separate EQ to the earpie
 | `REQUEST_IGNORE_BATTERY_OPTIMIZATIONS` | Open the battery-optimization exemption dialog |
 | `DUMP` (optional, granted via adb/root) | Detect audio sessions with `dumpsys` |
 
+## Build
 
+APKs are produced by the maintainer with GitHub Actions (`.github/workflows/build-earpiece-eq.yml`). Updates are signed with the same key, so a new build installs over the previous one and keeps your settings.
 
 ## License
 
@@ -100,6 +103,7 @@ Copyright © Rakkashin. **All rights reserved.** The source code is closed; no l
 - **イヤホン接続時は自動で無効化** – 有線・USB・Bluetoothの出力が接続されるとEQを解除し、本体スピーカーに戻ると自動で再適用します。
 - **再起動後(とアプリ更新後)の自動開始**。バッテリー最適化の除外へのショートカット付き。
 - **プリセット** – 編集中のスピーカーのEQに名前を付けて保存/読込。
+- **まとめてプリセット** – イヤーピースと下スピーカーのEQ(と適用のON/OFF)を1つにまとめて保存し、ワンタップで両方に適用。
 - **バックアップ・引き継ぎ** – 設定とプリセットをJSONで書き出し/読み込み(ファイル/クリップボード)。旧版の `eq.xml` も読み込めます。
 - **クイック設定タイル**、スピーカー別のテスト音(EQ込み/なし)、画面上の診断ログ。
 - **日本語/英語UI** – 端末の言語が日本語なら日本語、それ以外は英語で表示します。
@@ -153,7 +157,9 @@ Copyright © Rakkashin. **All rights reserved.** The source code is closed; no l
 | `REQUEST_IGNORE_BATTERY_OPTIMIZATIONS` | バッテリー最適化の除外ダイアログを開く |
 | `DUMP`(任意。adb/rootで付与) | `dumpsys` で音声セッションを検出 |
 
+## ビルド
 
+APKは、メンテナーがGitHub Actions(`.github/workflows/build-earpiece-eq.yml`)で作成します。更新版は同じ鍵で署名されるため、前のビルドに上書きインストールでき、設定も残ります。
 
 ## ライセンス
 
