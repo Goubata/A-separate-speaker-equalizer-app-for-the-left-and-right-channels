@@ -72,10 +72,6 @@ A system-wide equalizer for Android that can apply a **separate EQ to the earpie
 | `REQUEST_IGNORE_BATTERY_OPTIMIZATIONS` | Open the battery-optimization exemption dialog |
 | `DUMP` (optional, granted via adb/root) | Detect audio sessions with `dumpsys` |
 
-## Build
-
-APKs are produced by the maintainer with GitHub Actions (`.github/workflows/build-earpiece-eq.yml`). Updates are signed with the same key, so a new build installs over the previous one and keeps your settings.
-
 ## License
 
 Copyright © Rakkashin. **All rights reserved.** The source code is closed; no license is granted to use, copy, modify, distribute or reverse engineer it. The compiled app is provided for personal use as is, without any warranty.
@@ -156,10 +152,6 @@ Copyright © Rakkashin. **All rights reserved.** The source code is closed; no l
 | `RECEIVE_BOOT_COMPLETED` | 再起動後の自動開始 |
 | `REQUEST_IGNORE_BATTERY_OPTIMIZATIONS` | バッテリー最適化の除外ダイアログを開く |
 | `DUMP`(任意。adb/rootで付与) | `dumpsys` で音声セッションを検出 |
-
-## ビルド
-
-APKは、メンテナーがGitHub Actions(`.github/workflows/build-earpiece-eq.yml`)で作成します。更新版は同じ鍵で署名されるため、前のビルドに上書きインストールでき、設定も残ります。
 
 ## ライセンス
 
