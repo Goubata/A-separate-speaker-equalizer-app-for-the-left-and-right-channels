@@ -1,159 +1,131 @@
 # Earpiece EQ
 
-**English** | [日本語](#日本語)
+Androidの左右チャンネルを個別に調整するオーディオアプリです。イヤーピース側と下スピーカー側に別々の設定を使い、両側にかける共通処理も重ねられます。
 
-A system-wide equalizer for Android that can apply a **separate EQ to the earpiece speaker and the bottom speaker at the same time**. It attaches an audio effect to other apps' audio sessions, and it is built around phones that use the earpiece as the second stereo speaker.
+[最新版をダウンロード](https://github.com/Goubata/A-separate-speaker-equalizer-app-for-the-left-and-right-channels/releases/latest) · [English](#english)
 
-> **Closed source.** This repository does not grant any right to use, copy, modify or redistribute the source code. See [License](#license).
+## できること
 
-## Features
-
-- **Per-speaker EQ** – independent EQ for the earpiece and for the bottom speaker. Turn either one on, or both at once.
-- **Up to ±50 dB per band**, 1–32 sliders (default 10), preamp ±12 dB.
-- **Smooth interpolation** – frequencies between sliders are filled in automatically (monotone cubic interpolation, no overshoot) onto a fixed set of fine internal bands.
-- **Screen-rotation aware** – the earpiece/bottom assignment follows the screen orientation, so reverse landscape and upside-down portrait are handled.
-- **Two attach modes**
-  - *Normal*: attaches to each app's audio session (detected via the audio-effect broadcast and `dumpsys media.audio_policy`).
-  - *Legacy*: attaches to the global output mix (session 0). No `dumpsys` / DUMP permission needed.
-- **Automatic bypass for headphones** – when wired, USB or Bluetooth audio output is connected the EQ is released; it is re-applied when you are back on the built-in speakers.
-- **Auto-start after reboot** (and after an app update), with a shortcut to the battery-optimization exemption.
-- **Presets** – save/load named EQ curves for whichever speaker you are editing.
-- **Combined presets** – save the earpiece EQ and the bottom-speaker EQ (plus their on/off state) as one preset and apply both with one tap.
-- **Backup / transfer** – export/import settings and presets as JSON (file or clipboard). Old `eq.xml` files can be imported too.
-- **Quick Settings tile**, test tones (per speaker, with or without EQ) and an on-screen diagnostic log.
-- **English / Japanese UI** – Japanese if the device language is Japanese, English otherwise.
-- No ads, no analytics, and the app does not request the `INTERNET` permission.
-
-## Requirements
-
-- Android 10 (API 29) or later.
-- A device whose earpiece is driven as one of the stereo channels (the app assumes earpiece = left channel in portrait).
-- For **Normal mode**, the app needs to read `dumpsys`. Either:
-  - grant the DUMP permission once from a PC:
-    ```
-    adb shell pm grant rakkashin.earpieceeq android.permission.DUMP
-    ```
-  - or use a rooted device (the app can grant it to itself via `su`).
-- **Legacy mode** needs neither, but some devices/ROMs refuse effects on session 0.
-
-## Setup
-
-1. Install the APK and open the app once (Android does not deliver boot events to apps that were never opened).
-2. Allow notifications (the equalizer runs as a foreground service).
-3. Turn on **Enabled**.
-4. Choose where to apply EQ: *Apply EQ to earpiece* and/or *Apply EQ to bottom speaker*.
-5. Use **EQ to edit** to switch which speaker's sliders you are changing.
-6. Tap **Exempt from battery optimization** so auto-start after reboot is reliable.
-7. If nothing happens in Normal mode, grant the DUMP permission (above) or switch on **Legacy mode**.
-
-## Usage tips
-
-- Use the test tones to check that the sound comes from the speaker you expect for the current orientation.
-- The `Enabled` switch and the Quick Settings tile start/stop the service.
-- If the EQ does not seem to work, tap **Write dumpsys session lines to log** / **Copy full log** and check the log lines starting with `attach OK ... readback`.
-- Do not run it together with another system-wide equalizer.
-
-## Known limitations
-
-- The earpiece cannot reproduce very low or very high frequencies, so those sliders may be inaudible there regardless of the setting.
-- Channel mapping (earpiece = left in portrait, swapped at 180° / 270°) is based on tests on one device family; other devices may differ.
-- A connected Bluetooth/USB/wired output is treated as "headphones" and disables the EQ, even if audio is not actually routed there.
-- Large gains (up to ±50 dB) can be very loud or distort. Lower the volume before adjusting.
-- Provided as is, without warranty.
-
-## Permissions
-
-| Permission | Why |
+| メニュー | 主な機能 |
 |---|---|
-| `MODIFY_AUDIO_SETTINGS` | Attach audio effects |
-| `FOREGROUND_SERVICE`, `FOREGROUND_SERVICE_SPECIAL_USE` | Keep the equalizer alive |
-| `POST_NOTIFICATIONS` | Show the foreground-service notification |
-| `RECEIVE_BOOT_COMPLETED` | Auto-start after reboot |
-| `REQUEST_IGNORE_BATTERY_OPTIMIZATIONS` | Open the battery-optimization exemption dialog |
-| `DUMP` (optional, granted via adb/root) | Detect audio sessions with `dumpsys` |
+| 個別EQ・共通EQ | 1〜32バンド、各バンド±50 dB、プリアンプ±12 dB、滑らかな周波数補間 |
+| 個別低音・共通低音 | 仮想低音、低音の厚み、処理帯域調整、曲に合わせた自動調整、低域の上限設定、処理量メーター |
+| 個別FX・共通FX | 音量均等化、明瞭度、真空管・アナログ質感、高域拡張、最大10バンドのダイナミックEQ、IRS/WAVコンボルバー、低域モノラル、サラウンド、3帯域ステレオ幅、リバーブ |
+| 処理品質 | 非線形処理の内部オーバーサンプリング。元音源にない録音情報を復元する機能ではありません |
+| プリセット | 個別・共通・まとめて保存に加え、動作設定も含む全設定プリセット |
+| バックアップ | JSONファイル／クリップボードで書き出し・読込、旧eq.xmlの取込、IRSデータのバックアップ |
+| 出力別設定 | 本体と外部機器の設定を切り替え、再接続時に最後の設定を復帰 |
 
-## License
+個別段と共通段は同時に使えます。サラウンド・ステレオ幅・低域モノラルは左右を参照する処理です。設定は各側と共通段で分かれていますが、音声信号そのものが完全に独立する処理ではありません。
 
-Copyright © Rakkashin. **All rights reserved.** The source code is closed; no license is granted to use, copy, modify, distribute or reverse engineer it. The compiled app is provided for personal use as is, without any warranty.
+- 本体スピーカーでは画面の向きに合わせて適用チャンネルを切り替えます。外部出力の左右は固定です。
+- 処理の有効／無効は専用モジュールの音声処理にも連動します。出力監視サービスだけが動作を続ける場合があります。
+- ダークモード、大きな文字、クイック設定タイル、テスト音、診断ログ、導入済みモジュールのバージョン表示に対応しています。
+- 端末の言語が日本語なら日本語、それ以外は英語で表示します。
+- 録音・画面キャプチャによる音声取得は使いません。
 
+## 必要なもの
+
+| 機能 | 条件 |
+|---|---|
+| アプリ | Android 10以降。音声エフェクトの対応状況は端末・ROM・プレーヤーに依存 |
+| 従来の個別EQ | Android標準のDynamicsProcessing。レガシーモードではセッション0を使用し、DUMP権限は不要。通常モードの補助スキャンにはDUMP権限またはrootが必要 |
+| 共通EQ・低音・追加FX | rootと専用AIDLモジュール。最新の同梱版を推奨。音量均等化はモジュールv0.21以降が必要 |
+| 専用モジュール | **Android 16・arm64・AIDL effect HAL v3向け**。全端末への互換性を保証するものではありません |
+| 外部機器ごとの自動切替 | メディア出力先を取得できるAndroid 13以降。識別不能・複数出力時は処理と編集を停止 |
+| プリセット・バックアップ・UI | 機能自体にrootは不要。音声への適用条件は上記の通り |
+
+root用処理を使うために、レガシーモードをONにする必要はありません。
+
+## 導入・更新
+
+1. [Releases](https://github.com/Goubata/A-separate-speaker-equalizer-app-for-the-left-and-right-channels/releases/latest)からAPKをダウンロードし、インストールします。同じ署名の既存アプリには上書きできます。
+2. 一度アプリを開き、通知を許可します。自動開始を使う場合は、バッテリー最適化の除外も設定します。
+3. root用機能を使う場合は、リリースの専用モジュールZIPをMagiskで導入・更新して再起動します。アプリから同梱ZIPを書き出すこともできます。
+4. rootを許可し、処理を有効にします。適用する側と編集する側を選び、必要な機能をONにします。
+5. 調整後は「プリセット」メニューで保存できます。
+
+既にモジュールv0.21を使っている場合、**v0.21.1は説明文の更新のみ**です。音声処理のためのモジュール再更新は不要です。v0.21.1のZIPは、モジュールの説明とインストール案内も更新しています。
+
+通常モードのセッション検出にDUMP権限を付与する場合:
+
+```sh
+adb shell pm grant rakkashin.earpieceeq android.permission.DUMP
+```
+
+## 全設定プリセットと外部出力
+
+「全設定プリセット」は、個別・共通の音声設定に加え、処理ON/OFF、レガシーモード、回転追従、自動開始・切替、本体と保存済み外部機器の設定を保存・復元します。実際の接続先、Androidの権限、インストール済みモジュール、プリセット一覧そのものは変更しません。バックアップには保存済みプリセットも含まれますが、取り込むだけで全設定プリセットが適用されることはありません。
+
+外部出力でも処理したい場合は、本体出力に戻って「イヤホン接続中は処理を停止する」をOFFにします。外部出力中はEQ・低音・追加FXなどの音声調整と処理ON/OFF・レガシーモードを利用し、本体用の動作設定は操作できません。新しい機器は処理OFF・フラットで始まります。固有情報のない機器や同名機器、受動型の有線イヤホンは、設定を共有する場合があります。
+
+## 音量と動作について
+
+dBFSはデジタル信号の値で、スピーカーの音圧や振動量ではありません。低音の上限や音量均等化は、すべての曲を完全に同じ聴感音量にしたり、元音源の歪みを修復したりするものではありません。低い音量から調整してください。スピーカーが再生できる帯域にも限界があります。
+
+音量均等化は有効な段ごとに約5ms、IRS畳み込みは512サンプルの遅延を加えます。音量均等化の強さ0は素通しです。効果が分からない場合は、対象出力・適用側・各機能のON/OFF・ステータス・モジュールのバージョンを確認してください。
+
+## 配布とライセンス
+
+このリポジトリは説明とビルド済み成果物の配布用です。アプリのソースコードは公開していません。
+
+Copyright © Rakkashin. All rights reserved. ビルド済みアプリは個人利用向けに現状有姿で提供し、保証はありません。同梱の第三者コンポーネントについては、各ライセンスとNOTICEを参照してください。
 
 ---
 
-# 日本語
+## English
 
-**[English](#earpiece-eq)** | 日本語
+Earpiece EQ is an Android audio app with separate settings for the earpiece and bottom speaker, plus common processing that can be stacked with the individual stages.
 
-**イヤーピース側スピーカーと下スピーカーに、別々のEQを同時に適用できる**Android用のシステム全体イコライザーです。他アプリの音声セッションにオーディオエフェクトを張る方式で、イヤーピースをステレオの片側として使う端末向けに作っています。
+[Download the latest release](https://github.com/Goubata/A-separate-speaker-equalizer-app-for-the-left-and-right-channels/releases/latest)
 
-> **クローズドソースです。** このリポジトリは、ソースコードの利用・複製・改変・再配布の権利を一切許諾しません。[ライセンス](#ライセンス)を参照してください。
+### Features
 
-## 機能
+- Individual and common EQ: 1–32 bands, ±50 dB per band, ±12 dB preamp and smooth frequency interpolation.
+- Individual and common bass: virtual bass, bass body, adjustable processing bands, automatic bass adjustment, low-band ceilings and processing meters.
+- Individual and common FX: full-band volume leveling, clarity, tube/analog character, spectrum extension, up to 10-band dynamic EQ, IRS/WAV convolution, bass mono, surround, three-band stereo width and reverb.
+- Internal oversampling for nonlinear processing. It cannot recover missing recorded information or turn the hardware output into true hi-res.
+- Individual, common, combined and full settings presets; JSON and legacy eq.xml import; backups with IRS data.
+- Saved settings per external output, speaker assignment following screen rotation, dark mode, large text, Quick Settings tile, test tones, diagnostics and installed module version.
+- Japanese UI for Japanese devices; English for every other language. No recording or screen capture is used to obtain audio.
 
-- **スピーカー別EQ** – イヤーピースと下スピーカーで独立したEQ。片方だけでも、両方同時でもONにできます。
-- **各バンド最大±50 dB**、スライダー数は1〜32本(初期10本)、プリアンプは±12 dB。
-- **自動の滑らかな補間** – スライダーの間の周波数は、固定の細かい内部バンドに単調3次補間(行き過ぎなし)で自動的に埋められます。
-- **画面の向きに追従** – イヤーピース/下スピーカーの割り当てが向きに合わせて入れ替わるので、反転横や逆さ縦でも狙い通りに掛かります。
-- **2つの適用モード**
-  - *通常*: アプリごとの音声セッションに張ります(エフェクト通知のブロードキャストと `dumpsys media.audio_policy` で検出)。
-  - *レガシー*: グローバル出力ミックス(セッション0)に張ります。`dumpsys` もDUMP権限も不要です。
-- **イヤホン接続時は自動で無効化** – 有線・USB・Bluetoothの出力が接続されるとEQを解除し、本体スピーカーに戻ると自動で再適用します。
-- **再起動後(とアプリ更新後)の自動開始**。バッテリー最適化の除外へのショートカット付き。
-- **プリセット** – 編集中のスピーカーのEQに名前を付けて保存/読込。
-- **まとめてプリセット** – イヤーピースと下スピーカーのEQ(と適用のON/OFF)を1つにまとめて保存し、ワンタップで両方に適用。
-- **バックアップ・引き継ぎ** – 設定とプリセットをJSONで書き出し/読み込み(ファイル/クリップボード)。旧版の `eq.xml` も読み込めます。
-- **クイック設定タイル**、スピーカー別のテスト音(EQ込み/なし)、画面上の診断ログ。
-- **日本語/英語UI** – 端末の言語が日本語なら日本語、それ以外は英語で表示します。
-- 広告・解析なし。`INTERNET` 権限も要求しません。
+Individual and common stages work together. Spatial effects, stereo width and bass mono reference both channels, while retaining separate controls per output side and common stage. The master switch also bypasses the companion module's audio processing; a route monitor may remain running.
 
-## 動作要件
+### Requirements and setup
 
-- Android 10(API 29)以上。
-- イヤーピースがステレオの片チャンネルとして鳴る端末(縦向きでイヤーピース=左チャンネルを想定)。
-- **通常モード**では `dumpsys` を読む必要があります。次のどちらかを行ってください。
-  - PCから一度だけDUMP権限を付与:
-    ```
-    adb shell pm grant rakkashin.earpieceeq android.permission.DUMP
-    ```
-  - rootの端末を使う(アプリが `su` で自分に付与できます)。
-- **レガシーモード**はどちらも不要ですが、セッション0へのエフェクトを拒否する端末/ROMもあります。
-
-## セットアップ
-
-1. APKをインストールして、一度アプリを開きます(一度も開いていないアプリには、起動完了の通知が届かないため)。
-2. 通知を許可します(イコライザーはフォアグラウンドサービスで動きます)。
-3. **有効** をONにします。
-4. 「イヤーピース側にEQを適用」「下スピーカー側にEQを適用」で、EQを掛ける側を選びます(両方も可)。
-5. 「編集するEQ」で、いまスライダーを操作する側を切り替えます。
-6. 「バッテリー最適化を除外」を押して、再起動後の自動開始を安定させます。
-7. 通常モードで反応しない場合は、DUMP権限を付与するか、**レガシーモード**をONにしてください。
-
-## 使い方のヒント
-
-- テスト音で、いまの向きで狙ったスピーカーから鳴るか確認できます。
-- 「有効」スイッチとクイック設定タイルで、サービスの開始/停止ができます。
-- EQが効かないときは、「dumpsysのsession行をログへ」「ログを全文コピー」で、`attach OK ... readback` で始まるログ行を確認してください。
-- 他のシステム全体イコライザーとは併用しないでください。
-
-## 既知の制限
-
-- イヤーピースは非常に低い/高い周波数を再生できないため、その帯域のスライダーは設定に関わらず聞こえないことがあります。
-- チャンネルの対応(縦向きでイヤーピース=左、180°/270°で入れ替え)は、特定の端末での検証に基づいています。他の端末では異なる場合があります。
-- 接続中のBluetooth/USB/有線出力は、実際には音が流れていなくても「イヤホン」として扱われ、EQが無効になります。
-- 大きなゲイン(最大±50 dB)は非常に大きな音や歪みの原因になります。調整前に音量を下げてください。
-- 現状有姿で提供し、いかなる保証もしません。
-
-## 権限
-
-| 権限 | 用途 |
+| Feature | Requirements |
 |---|---|
-| `MODIFY_AUDIO_SETTINGS` | オーディオエフェクトを張る |
-| `FOREGROUND_SERVICE`, `FOREGROUND_SERVICE_SPECIAL_USE` | イコライザーの常駐 |
-| `POST_NOTIFICATIONS` | フォアグラウンドサービスの通知表示 |
-| `RECEIVE_BOOT_COMPLETED` | 再起動後の自動開始 |
-| `REQUEST_IGNORE_BATTERY_OPTIMIZATIONS` | バッテリー最適化の除外ダイアログを開く |
-| `DUMP`(任意。adb/rootで付与) | `dumpsys` で音声セッションを検出 |
+| App | Android 10+. Audio-effect support depends on the device, ROM and player |
+| Original individual EQ | Android DynamicsProcessing. Legacy mode uses session 0 without DUMP permission. Normal-mode supplemental scanning needs DUMP permission or root |
+| Common EQ, bass and advanced FX | Root and the companion AIDL module. Volume leveling needs module v0.21+ |
+| Companion module | **Targets Android 16, arm64, AIDL effect HAL v3**; not a universal module |
+| Automatic external output profiles | Android 13+ media-route identification. Unknown or multiple routes pause processing and editing |
+| Presets, backup and UI | No root needed for these features themselves |
 
-## ライセンス
+Install the APK from Releases over the existing app, open it and allow notifications. For root DSP, install/update the companion ZIP in Magisk and reboot, grant root access, then enable processing and the desired features. You can also export the bundled ZIP from the app. Legacy mode is optional for root DSP. Existing settings are preserved when updating with the same app ID and signature.
 
-Copyright © Rakkashin. **All rights reserved.** ソースコードは非公開で、利用・複製・改変・再配布・リバースエンジニアリングのいかなる権利も許諾しません。ビルド済みアプリは個人利用に限り、現状有姿で提供し、いかなる保証もしません。
+If you already use module v0.21, **v0.21.1 only changes descriptions**: a module update is optional for audio processing. Its ZIP updates the module description and installer text as well.
 
+For normal-mode supplemental session scanning, DUMP permission can be granted from a PC:
+
+```sh
+adb shell pm grant rakkashin.earpieceeq android.permission.DUMP
+```
+
+### Full settings and external outputs
+
+Full settings presets restore audio and operation settings for built-in and saved external outputs, including processing ON/OFF, Legacy mode, rotation and automatic startup/switching. They keep the actual connection and preset libraries unchanged, and do not restore Android permissions or installed modules. Backup import carries saved full presets without applying them automatically.
+
+To process external outputs, return to built-in output and turn off “Pause processing for earphones.” Audio controls and processing/Legacy switches are available externally; built-in operation settings remain locked. New devices start with processing OFF and flat settings. Devices without unique metadata, passive wired headphones or identically named devices may share a profile. External left/right assignments stay fixed when the screen rotates.
+
+### Levels and latency
+
+Digital dBFS is not acoustic sound pressure or speaker excursion. Bass ceilings and volume leveling do not guarantee identical perceived loudness or repair existing clipping. Start at a low listening volume. Physical speakers also have limited frequency response.
+
+Each active volume-leveling stage adds about 5ms; IRS convolution adds 512 samples. Leveler strength 0 is bypass. Check the current output, selected side, feature switches, status and module version if an effect seems absent.
+
+### Distribution
+
+This repository distributes documentation and compiled releases. Application source is not published.
+
+Copyright © Rakkashin. All rights reserved. Compiled application releases are provided for personal use as is, without warranty. Third-party components retain their respective licenses and notices.
