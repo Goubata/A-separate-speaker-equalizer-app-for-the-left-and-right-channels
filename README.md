@@ -11,6 +11,7 @@ Androidの左右チャンネルを個別に調整するオーディオアプリ�
 | 個別EQ・共通EQ | 1〜32バンド、各バンド±50 dB、プリアンプ±12 dB、滑らかな周波数補間 |
 | 個別低音・共通低音 | 仮想低音、低音の厚み、処理帯域調整、曲に合わせた自動調整、低域の上限設定、処理量メーター |
 | 個別FX・共通FX | 音量均等化、明瞭度、真空管・アナログ質感、高域拡張、最大10バンドのダイナミックEQ、IRS/WAVコンボルバー、低域モノラル、サラウンド、3帯域ステレオ幅、リバーブ |
+| HiFi | 個別・共通のヘッドルーム、DC除去、極性反転、最終サンプルピーク上限、出力対応形式の参考表示 |
 | 処理品質 | 非線形処理の内部オーバーサンプリング。元音源にない録音情報を復元する機能ではありません |
 | プリセット | 個別・共通・まとめて保存に加え、動作設定も含む全設定プリセット、機器名付き外部用プリセット（個別／全件ファイル入出力） |
 | バックアップ | JSONファイル／クリップボードで書き出し・読込、旧eq.xmlの取込、IRSデータのバックアップ |
@@ -139,3 +140,9 @@ Copyright © Rakkashin. All rights reserved. Compiled application releases are p
 v0.24「処理品質」に初期OFFで追加。root・Android 14以降・対応USB出力・同じ出力上の有効なAIDL DSPが必要です。単一PCMステレオ音源にDEFAULT mixerを合わせ、EQ/低音/FXとの併用を試みます。排他/BIT_PERFECTではありません。非対応・複数音源・既存優先設定は変更せず、要求後にレート/DSPを確認できなければ解除。全体OFFにも連動します。**USB DAC実機と実際のSRC回避は未検証です。** 元ファイルやDAC内SRCは判定できず、プレーヤー側変換は取り消せません。切替時の音切れ、異常終了後の解除保留があり得ます。保留時はアプリ再起動かUSB再接続を行ってください。
 
 Initially OFF under Processing quality. Requires root, Android 14+, compatible USB output and active AIDL DSP on the same output. Requests DEFAULT mixer attributes matching one PCM stereo media track; intended to retain EQ/bass/FX. No exclusive/BIT_PERFECT. Unknown/multiple/unsupported streams and existing preferences are skipped. Missing rate/DSP confirmation triggers rollback; master OFF releases the request. **Physical USB DAC behavior and actual SRC avoidance are untested.** Android-boundary observations cannot prove file/DAC-internal SRC bypass or undo player-side conversion. Switching may interrupt playback; reopen the app or reconnect USB if cleanup remains pending.
+
+## HiFi・信号調整 / HiFi signal controls
+
+v0.25で独立したHiFiタブを追加。個別左右と共通段を重ねて使えます。初期OFF。入力の余裕を0〜24 dBで作り、DC除去、極性反転、最終サンプルピーク抑制を調整できます。共通ピーク抑制は左右連動です。機器が報告するレート/形式も参考表示します。全体OFF・回転・外部デバイス別保存・プリセット・バックアップに対応。**rootと専用モジュールv0.25が必要：APKとモジュール更新後に再起動してください。** HiFiという名称は音源情報の復元ではなく、上限はTrue Peakや音圧の保証ではありません。DC除去は超低域も減衰します。
+
+v0.25 adds initially OFF individual L/R and common HiFi stages: 0–24 dB headroom attenuation, DC blocking, polarity reversal and final sample-peak guarding. Common peak reduction links L/R. Device-reported formats are capabilities, not current stream values. Master bypass, rotation, per-device storage and presets/backups are supported. **Root + module v0.25 required: update APK and module, then reboot.** This does not restore lost recording information or guarantee True Peak/physical loudness/downstream clipping protection. DC blocking also attenuates sub-bass.
