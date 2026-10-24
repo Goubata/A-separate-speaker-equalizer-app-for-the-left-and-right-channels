@@ -45,7 +45,7 @@ adb shell pm grant rakkashin.earpieceeq android.permission.DUMP
 
 ### 3. 個別EQ・共通EQ
 
-1〜32バンド、各バンド **−50〜+50 dB**、プリアンプ **−12〜+12 dB**。約31Hz〜20kHzの制御点の間を対数周波数上で滑らかに補間します。バンド数ごとにゲインを記憶し、バンド数を戻すとその調整値へ戻ります。フラットへのリセットも可能です。
+1〜32バンド、各バンド **−50〜+50 dB**、プリアンプ **−12〜+12 dB**。約31Hz〜20kHzの制御点の間を対数周波数上で滑らかに補間します。バンド数ごとにゲインを記憶し、バンド数を戻すとその調整値へ戻ります。フラットへのリセットも可能です。1バンドでは全体のゲインを調整します。
 
 個別EQは編集対象の片側へ、共通EQは独立したスイッチと設定で両側へ適用します。共通EQだけのプリセットも保存できます。
 
@@ -152,7 +152,7 @@ IRSはモノラル/ステレオのPCM16/24/32・float32 RIFF/WAVE、または48k
 - Material風カード/タブ、システムバーの表示調整、ライト/ダーク、大きな文字、横画面に対応。アプリアイコンには黒い縁取りがあります。
 - 端末が日本語なら日本語、中国語なら簡体字中国語、それ以外は英語。ユーザーが付けた機器名・プリセット名は翻訳しません。
 - クイック設定タイルで全体ON/OFF。再起動/アプリ更新後の自動開始は、保存済み処理ONと自動開始設定に従います。通知とバッテリー最適化設定を確認できます。
-- 1kHzの片側テスト音とEQ込みテスト音で、スピーカー割当・適用を確認可能。
+- 1kHzの片側テスト音とEQ込みテスト音で、スピーカー割当・適用を確認可能。グローバル処理が有効なら通常のテスト音にも適用されます。
 - ステータスでサービス、モード、出力先、処理セッション、権限、自動開始/電池設定、導入済みモジュール、稼働ドライバーの確認状況を表示。
 - 手動セッション適用、再スキャン、`dumpsys`のセッション行取得、診断ログ表示・全文コピーに対応。
 
@@ -211,7 +211,7 @@ adb shell pm grant rakkashin.earpieceeq android.permission.DUMP
 
 ### 3. Individual and common EQ
 
-Choose 1–32 bands, **−50 to +50 dB per band**, and **−12 to +12 dB preamp**. Control points span approximately 31Hz–20kHz, with smooth interpolation on a logarithmic frequency axis. Each band count remembers its own gains; switching back recalls them. Reset to flat is available.
+Choose 1–32 bands, **−50 to +50 dB per band**, and **−12 to +12 dB preamp**. Control points span approximately 31Hz–20kHz, with smooth interpolation on a logarithmic frequency axis. Each band count remembers its own gains; switching back recalls them. Reset to flat is available. A single band adjusts the overall gain.
 
 Individual EQ applies to the selected output side. Common EQ has its own switch and settings for both sides, plus dedicated common-EQ presets.
 
@@ -318,7 +318,7 @@ New devices start with processing OFF and flat settings. External output allows 
 - Material-style cards/tabs, system-bar appearance adjustments, light/dark modes, large text and landscape support. The app icon has a black outline.
 - Japanese device language selects Japanese; all Chinese locales select Simplified Chinese; every other language selects English. User device/preset names remain unchanged.
 - Quick Settings tile toggles master processing. Automatic startup after reboot/app update follows saved processing and startup settings. Notification and battery optimization controls are available.
-- One-sided 1kHz test tones, with/without EQ, help check speaker mapping and processing.
+- One-sided 1kHz regular/EQ-attached test tones help check speaker mapping and processing. Enabled global processing also affects the regular test tone.
 - Status shows service, mode, output, sessions, permissions, startup/battery settings, installed module version and active-driver verification status.
 - Manual session attachment, rescanning, `dumpsys` session-line collection, log display and full-log copying are available.
 
@@ -377,7 +377,7 @@ adb shell pm grant rakkashin.earpieceeq android.permission.DUMP
 
 ### 3. 独立 EQ 与共用 EQ
 
-支持 1–32 个频段，每段 **−50 至 +50 dB**，前级增益 **−12 至 +12 dB**。控制点约覆盖 31Hz–20kHz，在对数频率轴上平滑插值。每种频段数量分别记忆增益，切回时恢复对应设置。支持重置为平直。
+支持 1–32 个频段，每段 **−50 至 +50 dB**，前级增益 **−12 至 +12 dB**。控制点约覆盖 31Hz–20kHz，在对数频率轴上平滑插值。每种频段数量分别记忆增益，切回时恢复对应设置。支持重置为平直。仅使用一个频段时调整整体增益。
 
 独立 EQ 应用于所选输出侧；共用 EQ 使用独立开关与设置作用于两侧，并提供专用共用 EQ 预设。
 
@@ -484,7 +484,7 @@ IRS 支持单/双声道 PCM16/24/32、float32 RIFF/WAVE，以及按 48kHz 单声
 - Material 风格卡片/标签、系统栏显示调整、浅色/深色、大字体和横屏支持；应用图标带黑色边框。
 - 日语设备显示日语；所有中文区域显示简体中文；其余语言显示英语。用户设备名和预设名不翻译。
 - 快捷设置磁贴切换整体处理。重启/应用更新后的自动启动遵循已保存处理状态及自动启动设置；可检查通知和电池优化。
-- 提供单侧 1kHz 测试音与应用 EQ 的测试音，帮助确认扬声器映射及处理。
+- 提供单侧 1kHz 普通测试音与附加 EQ 的测试音，帮助确认扬声器映射及处理。已启用的全局处理也会影响普通测试音。
 - 状态显示服务、模式、输出、会话、权限、启动/电池设置、已安装模块版本和运行驱动验证状态。
 - 支持手动会话应用、重新扫描、获取 `dumpsys` 会话行、显示诊断日志和复制完整日志。
 
