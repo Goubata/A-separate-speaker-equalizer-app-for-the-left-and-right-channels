@@ -11,6 +11,7 @@ Androidの左右チャンネルを個別に調整するオーディオアプリ�
 | 個別EQ・共通EQ | 1〜32バンド、各バンド±50 dB、プリアンプ±12 dB、滑らかな周波数補間 |
 | 個別低音・共通低音 | 仮想低音、低音の厚み、処理帯域調整、曲に合わせた自動調整、低域の上限設定、処理量メーター |
 | 個別FX・共通FX | 音量均等化、明瞭度、真空管・アナログ質感、高域拡張、最大10バンドのダイナミックEQ、IRS/WAVコンボルバー、低域モノラル、サラウンド、3帯域ステレオ幅、リバーブ |
+| バイブレーション | 本体出力の低音の強弱に連動するモーター振動。初期OFF・弱め、強さと検出帯域を調整 |
 | HiFi | 個別・共通のヘッドルーム、DC除去、極性反転、最終サンプルピーク上限、出力対応形式の参考表示 |
 | 処理品質 | 非線形処理の内部オーバーサンプリング。元音源にない録音情報を復元する機能ではありません |
 | プリセット | 個別・共通・まとめて保存に加え、動作設定も含む全設定プリセット、機器名付き外部用プリセット（個別／全件ファイル入出力） |
@@ -22,7 +23,7 @@ Androidの左右チャンネルを個別に調整するオーディオアプリ�
 - 本体スピーカーでは画面の向きに合わせて適用チャンネルを切り替えます。外部出力の左右は固定です。
 - 処理の有効／無効は専用モジュールの音声処理にも連動します。出力監視サービスだけが動作を続ける場合があります。
 - ダークモード、大きな文字、クイック設定タイル、テスト音、診断ログ、導入済みモジュールのバージョン表示に対応しています。
-- 端末の言語が日本語なら日本語、それ以外は英語で表示します。
+- 端末の言語が日本語なら日本語、中国語なら簡体字中国語、それ以外は英語で表示します。
 - 録音・画面キャプチャによる音声取得は使いません。
 
 ## 必要なもの
@@ -90,7 +91,7 @@ Earpiece EQ is an Android audio app with separate settings for the earpiece and 
 - Internal oversampling for nonlinear processing. It cannot recover missing recorded information or turn the hardware output into true hi-res.
 - Individual, common, combined and full settings presets; external device presets with device names and individual/all JSON file export/import; legacy eq.xml import and backups with IRS data.
 - Saved settings per external output, speaker assignment following screen rotation, dark mode, large text, Quick Settings tile, test tones, diagnostics and installed module version.
-- Japanese UI for Japanese devices; English for every other language. No recording or screen capture is used to obtain audio.
+- Japanese UI for Japanese devices, Simplified Chinese for Chinese locales, and English for every other language. No recording or screen capture is used to obtain audio.
 
 Individual and common stages work together. Spatial effects, stereo width and bass mono reference both channels, while retaining separate controls per output side and common stage. The master switch also bypasses the companion module's audio processing; a route monitor may remain running.
 
@@ -146,3 +147,13 @@ Initially OFF under Processing quality. Requires root, Android 14+, compatible U
 v0.25で独立したHiFiタブを追加。個別左右と共通段を重ねて使えます。初期OFF。入力の余裕を0〜24 dBで作り、DC除去、極性反転、最終サンプルピーク抑制を調整できます。共通ピーク抑制は左右連動です。機器が報告するレート/形式も参考表示します。全体OFF・回転・外部デバイス別保存・プリセット・バックアップに対応。**rootと専用モジュールv0.25が必要：APKとモジュール更新後に再起動してください。** HiFiという名称は音源情報の復元ではなく、上限はTrue Peakや音圧の保証ではありません。DC除去は超低域も減衰します。
 
 v0.25 adds initially OFF individual L/R and common HiFi stages: 0–24 dB headroom attenuation, DC blocking, polarity reversal and final sample-peak guarding. Common peak reduction links L/R. Device-reported formats are capabilities, not current stream values. Master bypass, rotation, per-device storage and presets/backups are supported. **Root + module v0.25 required: update APK and module, then reboot.** This does not restore lost recording information or guarantee True Peak/physical loudness/downstream clipping protection. DC blocking also attenuates sub-bass.
+
+Language selection: Japanese → Japanese; all Chinese locales → Simplified Chinese; every other language → English. User preset/device names remain unchanged.
+
+## 低音連動バイブレーション / Bass-following vibration
+
+v0.27で独立した振動タブを追加。初期OFF、強さ15%。本体出力の低音の強弱を読み取り専用タップで検出し、モーターへ渡します。録音・音声経路の切替・他アプリのエフェクトを無効にする操作は使いません。**root、モジュールv0.27、振幅制御対応モーターが必要。APKとモジュール更新後に再起動してください。** 全体OFF・機能OFF・外部出力・無音・古いデータで停止します。音声へ同期用の遅延を加えませんが、物理的な遅延ゼロや元音源と同じ音程の発音、他アプリを含むエフェクトの絶対的維持は保証できません。
+
+Initially OFF with weak 15% strength. A read-only bass envelope tap feeds an amplitude-controllable motor on built-in output only. No capture, rerouting or commands to disable third-party audio effects. **Requires root, module v0.27 and motor amplitude control; update APK/module and reboot.** Master/feature OFF, external output, silence and stale data stop vibration. No audio synchronization delay is added; physical zero latency, original-pitch motor reproduction and unconditional third-party effect retention are not guaranteed. See release notes for verification limits.
+
+语言选择：日语→日语，所有中文地区→简体中文，其他语言→英语。振动默认关闭、强度15%，仅限机身输出。需要root、专用模块v0.27及支持幅度控制的马达。
