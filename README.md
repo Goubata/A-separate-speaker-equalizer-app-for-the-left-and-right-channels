@@ -12,7 +12,7 @@ Androidの左右チャンネルを個別に調整するオーディオアプリ�
 | 個別低音・共通低音 | 仮想低音、低音の厚み、処理帯域調整、曲に合わせた自動調整、低域の上限設定、処理量メーター |
 | 個別FX・共通FX | 音量均等化、明瞭度、真空管・アナログ質感、高域拡張、最大10バンドのダイナミックEQ、IRS/WAVコンボルバー、低域モノラル、サラウンド、3帯域ステレオ幅、リバーブ |
 | 処理品質 | 非線形処理の内部オーバーサンプリング。元音源にない録音情報を復元する機能ではありません |
-| プリセット | 個別・共通・まとめて保存に加え、動作設定も含む全設定プリセット |
+| プリセット | 個別・共通・まとめて保存に加え、動作設定も含む全設定プリセット、機器名付き外部用プリセット（個別／全件ファイル入出力） |
 | バックアップ | JSONファイル／クリップボードで書き出し・読込、旧eq.xmlの取込、IRSデータのバックアップ |
 | 出力別設定 | 本体と外部機器の設定を切り替え、再接続時に最後の設定を復帰 |
 
@@ -59,6 +59,8 @@ adb shell pm grant rakkashin.earpieceeq android.permission.DUMP
 
 外部出力でも処理したい場合は、本体出力に戻って「イヤホン接続中は処理を停止する」をOFFにします。外部出力中はEQ・低音・追加FXなどの音声調整と処理ON/OFF・レガシーモードを利用し、本体用の動作設定は操作できません。新しい機器は処理OFF・フラットで始まります。固有情報のない機器や同名機器、受動型の有線イヤホンは、設定を共有する場合があります。
 
+「プリセット」画面先頭の外部デバイス用プリセットは、過去に保存された機器も選択できます。一覧に対象機器名と短い識別IDを表示します。適用はその機器の設定だけを復元し、未接続の場合は次回接続時に使われます。取り込むだけでは音声設定を適用しません。ファイルには保存済みのIRSも含められます。
+
 ## 音量と動作について
 
 dBFSはデジタル信号の値で、スピーカーの音圧や振動量ではありません。低音の上限や音量均等化は、すべての曲を完全に同じ聴感音量にしたり、元音源の歪みを修復したりするものではありません。低い音量から調整してください。スピーカーが再生できる帯域にも限界があります。
@@ -85,7 +87,7 @@ Earpiece EQ is an Android audio app with separate settings for the earpiece and 
 - Individual and common bass: virtual bass, bass body, adjustable processing bands, automatic bass adjustment, low-band ceilings and processing meters.
 - Individual and common FX: full-band volume leveling, clarity, tube/analog character, spectrum extension, up to 10-band dynamic EQ, IRS/WAV convolution, bass mono, surround, three-band stereo width and reverb.
 - Internal oversampling for nonlinear processing. It cannot recover missing recorded information or turn the hardware output into true hi-res.
-- Individual, common, combined and full settings presets; JSON and legacy eq.xml import; backups with IRS data.
+- Individual, common, combined and full settings presets; external device presets with device names and individual/all JSON file export/import; legacy eq.xml import and backups with IRS data.
 - Saved settings per external output, speaker assignment following screen rotation, dark mode, large text, Quick Settings tile, test tones, diagnostics and installed module version.
 - Japanese UI for Japanese devices; English for every other language. No recording or screen capture is used to obtain audio.
 
@@ -117,6 +119,8 @@ adb shell pm grant rakkashin.earpieceeq android.permission.DUMP
 Full settings presets restore audio and operation settings for built-in and saved external outputs, including processing ON/OFF, Legacy mode, rotation and automatic startup/switching. They keep the actual connection and preset libraries unchanged, and do not restore Android permissions or installed modules. Backup import carries saved full presets without applying them automatically.
 
 To process external outputs, return to built-in output and turn off “Pause processing for earphones.” Audio controls and processing/Legacy switches are available externally; built-in operation settings remain locked. New devices start with processing OFF and flat settings. Devices without unique metadata, passive wired headphones or identically named devices may share a profile. External left/right assignments stay fixed when the screen rotates.
+
+The External device presets section lists preset names, target device names and short identifiers. You can manage previously saved devices while disconnected. Apply restores only the target device; import only adds presets to the library. Individual/all JSON export includes available referenced IRS data.
 
 ### Levels and latency
 
