@@ -133,3 +133,9 @@ Each active volume-leveling stage adds about 5ms; IRS convolution adds 512 sampl
 This repository distributes documentation and compiled releases. Application source is not published.
 
 Copyright © Rakkashin. All rights reserved. Compiled application releases are provided for personal use as is, without warranty. Third-party components retain their respective licenses and notices.
+
+## USBレート追従（実験） / Experimental USB rate follow
+
+v0.24「処理品質」に初期OFFで追加。root・Android 14以降・対応USB出力・同じ出力上の有効なAIDL DSPが必要です。単一PCMステレオ音源にDEFAULT mixerを合わせ、EQ/低音/FXとの併用を試みます。排他/BIT_PERFECTではありません。非対応・複数音源・既存優先設定は変更せず、要求後にレート/DSPを確認できなければ解除。全体OFFにも連動します。**USB DAC実機と実際のSRC回避は未検証です。** 元ファイルやDAC内SRCは判定できず、プレーヤー側変換は取り消せません。切替時の音切れ、異常終了後の解除保留があり得ます。保留時はアプリ再起動かUSB再接続を行ってください。
+
+Initially OFF under Processing quality. Requires root, Android 14+, compatible USB output and active AIDL DSP on the same output. Requests DEFAULT mixer attributes matching one PCM stereo media track; intended to retain EQ/bass/FX. No exclusive/BIT_PERFECT. Unknown/multiple/unsupported streams and existing preferences are skipped. Missing rate/DSP confirmation triggers rollback; master OFF releases the request. **Physical USB DAC behavior and actual SRC avoidance are untested.** Android-boundary observations cannot prove file/DAC-internal SRC bypass or undo player-side conversion. Switching may interrupt playback; reopen the app or reconnect USB if cleanup remains pending.
