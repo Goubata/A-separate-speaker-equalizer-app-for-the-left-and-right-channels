@@ -157,3 +157,9 @@ v0.27で独立した振動タブを追加。初期OFF、強さ15%。本体出力
 Initially OFF with weak 15% strength. A read-only bass envelope tap feeds an amplitude-controllable motor on built-in output only. No capture, rerouting or commands to disable third-party audio effects. **Requires root, module v0.27 and motor amplitude control; update APK/module and reboot.** Master/feature OFF, external output, silence and stale data stop vibration. No audio synchronization delay is added; physical zero latency, original-pitch motor reproduction and unconditional third-party effect retention are not guaranteed. See release notes for verification limits.
 
 语言选择：日语→日语，所有中文地区→简体中文，其他语言→英语。振动默认关闭、强度15%，仅限机身输出。需要root、专用模块v0.27及支持幅度控制的马达。
+
+## レガシーモードの初期値 / Legacy default
+
+v0.28から未設定時のレガシーモードはONです。保存済みのOFF/ONは保持し、スイッチで切り替えられます。全体の処理は初期OFFのままです。振動ONによる他機能の排他化はありません。全設定プリセットは本体と保存済みの全外部機器の設定を復元し、現在の接続先とプリセット一覧を保持します。
+
+Since v0.28, unset Legacy mode defaults to ON; explicit saved OFF/ON values and the toggle are preserved. Master processing stays initially OFF. Vibration does not disable other features. Full settings presets restore built-in and all saved external device settings while retaining the current connection and preset libraries. Module v0.27 is unchanged.
