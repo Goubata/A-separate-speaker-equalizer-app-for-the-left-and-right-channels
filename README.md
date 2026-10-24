@@ -11,7 +11,7 @@ Androidの左右チャンネルを個別に調整するオーディオアプリ�
 | 個別EQ・共通EQ | 1〜32バンド、各バンド±50 dB、プリアンプ±12 dB、滑らかな周波数補間 |
 | 個別低音・共通低音 | 仮想低音、低音の厚み、処理帯域調整、曲に合わせた自動調整、低域の上限設定、処理量メーター |
 | 個別FX・共通FX | 音量均等化、明瞭度、真空管・アナログ質感、高域拡張、最大10バンドのダイナミックEQ、IRS/WAVコンボルバー、低域モノラル、サラウンド、3帯域ステレオ幅、リバーブ |
-| バイブレーション | 本体出力の低音の強弱に連動するモーター振動。初期OFF・弱め、強さと検出帯域を調整 |
+| バイブレーション | 強弱連動に加え、元の周波数を保つ音声波形モード（試験機能）。モーター専用6バンドEQ・強さ調整。本体出力のみ |
 | HiFi | 個別・共通のヘッドルーム、DC除去、極性反転、最終サンプルピーク上限、出力対応形式の参考表示 |
 | 処理品質 | 非線形処理の内部オーバーサンプリング。元音源にない録音情報を復元する機能ではありません |
 | プリセット | 個別・共通・まとめて保存に加え、動作設定も含む全設定プリセット、機器名付き外部用プリセット（個別／全件ファイル入出力） |
@@ -150,13 +150,17 @@ v0.25 adds initially OFF individual L/R and common HiFi stages: 0–24 dB headro
 
 Language selection: Japanese → Japanese; all Chinese locales → Simplified Chinese; every other language → English. User preset/device names remain unchanged.
 
-## 低音連動バイブレーション / Bass-following vibration
+## モーター波形再生 / Motor waveform playback
 
-v0.27で独立した振動タブを追加。初期OFF、強さ15%。本体出力の低音の強弱を読み取り専用タップで検出し、モーターへ渡します。録音・音声経路の切替・他アプリのエフェクトを無効にする操作は使いません。**root、モジュールv0.27、振幅制御対応モーターが必要。APKとモジュール更新後に再起動してください。** 全体OFF・機能OFF・外部出力・無音・古いデータで停止します。音声へ同期用の遅延を加えませんが、物理的な遅延ゼロや元音源と同じ音程の発音、他アプリを含むエフェクトの絶対的維持は保証できません。
+v0.29で「バイブレーション」に音声波形モード（試験機能）を追加。専用DSPのPCMを別セッションの振動用出力へ分岐し、元の周波数を保ってモーターへ送ります。スピーカーは元の経路で再生し、追加出力の音声L/Rは常に無音です。録音、通話モード切替、フォーカス要求、他エフェクトをOFFにする操作は使いません。
 
-Initially OFF with weak 15% strength. A read-only bass envelope tap feeds an amplitude-controllable motor on built-in output only. No capture, rerouting or commands to disable third-party audio effects. **Requires root, module v0.27 and motor amplitude control; update APK/module and reboot.** Master/feature OFF, external output, silence and stale data stop vibration. No audio synchronization delay is added; physical zero latency, original-pitch motor reproduction and unconditional third-party effect retention are not guaranteed. See release notes for verification limits.
+**root・AIDLモジュールv0.29・対応する振動音声出力が必要です。APKとモジュールを更新して再起動してください。** モーター出力と音声波形モードをONにして使用します。6バンド（40〜1280Hz）のEQは±12dB、強さの初期値は15%。DC除去、折返し抑制、デジタル駆動量の制限を行います。モーター設定は全設定プリセット・バックアップに含めます。保存済み設定は保持し、波形モードは初期OFFです。従来の強弱連動モードも利用できます。
 
-语言选择：日语→日语，所有中文地区→简体中文，其他语言→英语。振动默认关闭、强度15%，仅限机身输出。需要root、专用模块v0.27及支持幅度控制的马达。
+全体OFF・機能OFF・外部出力・データ停止で停止。非対応時は状態を表示して停止し、別方式へ自動切替しません。別の振動用ストリームをこの端末で開き、既存音楽エフェクトが有効のままであることを確認しました。新モジュールを導入した実音楽の聴感・同期は未確認です。**モーターの特性によって音量と音色が変わり、物理的なゼロ遅延や、すべての他アプリとの共存を保証できません。** スピーカーへ同期用の遅延は加えません。
+
+Adds opt-in experimental waveform motor playback. PCM is copied from the AIDL DSP into a separate haptic stream with silent speaker L/R, preserving source frequencies without octave shifting. No capture, audio-mode changes, focus requests or commands disabling other effects. Requires root, module v0.29 and compatible audio-coupled haptic hardware; update APK/module and reboot. Six motor-only EQ bands (40–1280Hz, ±12dB), weak 15% initial strength, DC/alias suppression and bounded drive. Full presets/backups include motor settings; existing settings and intensity-following mode are preserved. Master/feature OFF, external output, stale data and unsupported output stop it. A separate stream was accepted on this phone while existing music effects remained active. New-module real music, mechanical sound and synchronization remain unverified. Identical timbre, physical zero delay and universal coexistence are not guaranteed.
+
+中文：波形马达模式为试验功能，需要 root、v0.29 模块及支持音频耦合触觉的设备。更新 APK 和模块后重启。新增六段马达专用 EQ，保留现有设置，支持全设置预设及备份。扬声器音频保持原有路径，附加输出音频声道为零。不保证相同音色、物理零延迟或所有设备兼容。语言选择保持日语→日语、中文→简体中文、其他语言→英语。
 
 ## レガシーモードの初期値 / Legacy default
 
