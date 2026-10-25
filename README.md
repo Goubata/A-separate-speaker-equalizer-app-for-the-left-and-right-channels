@@ -7,7 +7,7 @@
 <a id="ja"></a>
 ## 日本語
 
-Androidのイヤーピース側・下スピーカー側を別々に調整するオーディオアプリです。外部出力では左・右チャンネルを調整します。個別設定に加え、両側へ適用する共通EQ・共通低音・共通FX・共通HiFiを重ねて使えます。この説明は **v0.30-recovery** を対象にしています。
+Androidのイヤーピース側・下スピーカー側を別々に調整するオーディオアプリです。外部出力では左・右チャンネルを調整します。個別設定に加え、両側へ適用する共通EQ・共通低音・共通FX・共通HiFiを重ねて使えます。この説明は **v0.31-boost** を対象にしています。
 
 ### 1. 導入・必要条件
 
@@ -120,6 +120,7 @@ IRSはモノラル/ステレオのPCM16/24/32・float32 RIFF/WAVE、または48k
 | 強弱連動 | DSPの低音包絡をモーターの強さへ変換。左右の強い方へ追従。検出上限60〜200Hz、強さ1〜100%。元の音程を再生する方式ではありません |
 | 音声波形モード（試験機能） | DSPのPCMコピーを別セッションの振動用出力へ送る。オクターブ変換せず元の周波数を保持。左右を平均して1つのモーターへ送る |
 | モーター専用EQ | 波形モードで40/80/160/320/640/1280Hzの6バンド、各±12dB・0.5dB刻み。スピーカーEQには影響しない。フラットへリセット可能 |
+| 追加ブースト | 初期OFF。ONで追加強度スライダーを表示。元の強さに0〜200%を加算（最大3倍）。波形・強弱連動の両方式に適用。全設定プリセットとバックアップへ保存。端末側の上限を超えることはできない |
 | 強さと保護 | 波形モードはDC除去・折返し抑制・デジタル駆動量制限を行う。強さとOS側のメディア/振動設定、端末の機械特性が実際の振動に影響 |
 
 波形モード中は従来の検出上限を編集できず、強弱連動モード中は波形用EQを編集できません。全体OFF・機能OFF・外部出力・古い/停止したデータでは停止します。非対応なら状態に表示して停止し、別方式へ黙って切り替えません。必要な更新後は機能をOFF→ONにして再試行できます。
@@ -162,7 +163,7 @@ dBFSはデジタル信号の値で、音圧dBや振動量ではありません�
 
 低域上限の経路は約3ms、音量均等化は有効段ごとに約5msの先読み、IRSは有効な畳み込み段ごとに512サンプルの遅延があります。処理品質や空間エフェクトにも遅延があり、モーターと出力バッファにも遅延があります。ゼロ遅延・全端末/全プレーヤー/全他社エフェクトとの共存は保証できません。
 
-v0.30では、全設定復元の連続操作によるクラッシュを修正し、同一形式通知時のDSP継続と停止・再開時の内部状態を検証しました。Java/Android回帰20スイート、ネイティブ14スイート、独立AIDL/FMQ試験、14画面条件、461項目の全設定プリセット/バックアップ復元を確認しました。独立した振動用出力中に既存音楽DSPが有効であることはv0.29で確認しています。今回のv0.30は独立テストで検証し、使用中のAPK・モジュールは変更していません。これは試験範囲での結果であり、機械的な発音・物理同期・実USB DAC/SRC回避・任意環境の不具合ゼロの保証ではありません。
+v0.31の追加ブーストは独立したPCM/制御試験と画面操作で検証しました。反映にはAPK更新後の再起動が必要で、AIDLモジュールはv0.30と同一です。v0.30では、全設定復元の連続操作によるクラッシュを修正し、同一形式通知時のDSP継続と停止・再開時の内部状態を検証しました。Java/Android回帰20スイート、ネイティブ14スイート、独立AIDL/FMQ試験、14画面条件、461項目の全設定プリセット/バックアップ復元を確認しました。独立した振動用出力中に既存音楽DSPが有効であることはv0.29で確認しています。今回のv0.30は独立テストで検証し、使用中のAPK・モジュールは変更していません。これは試験範囲での結果であり、機械的な発音・物理同期・実USB DAC/SRC回避・任意環境の不具合ゼロの保証ではありません。
 
 このリポジトリは説明とビルド済み成果物の配布用です。**アプリのソースコードは公開していません。** Copyright © Rakkashin. All rights reserved. ビルド済みアプリは個人利用向けに現状有姿で提供し、保証はありません。第三者コンポーネントには各ライセンス/NOTICEが適用されます。
 
@@ -173,7 +174,7 @@ v0.30では、全設定復元の連続操作によるクラッシュを修正し
 <a id="en"></a>
 ## English
 
-Earpiece EQ adjusts the earpiece and bottom speaker independently. With external outputs, it adjusts left and right channels. Common EQ, bass, FX and HiFi stages can be stacked with individual processing. This manual describes **v0.30-recovery**.
+Earpiece EQ adjusts the earpiece and bottom speaker independently. With external outputs, it adjusts left and right channels. Common EQ, bass, FX and HiFi stages can be stacked with individual processing. This manual describes **v0.31-boost**.
 
 ### 1. Installation and requirements
 
@@ -286,6 +287,7 @@ Built-in output only. Enable master processing and motor output. Initially OFF, 
 | Intensity following | Maps the DSP bass envelope to motor amplitude, following the stronger L/R envelope. Detection cutoff 60–200Hz, strength 1–100%. Does not reproduce source pitch |
 | Waveform mode, experimental | Copies DSP PCM into a separate haptic output session. Retains source frequencies without octave shifting; averages L/R for one motor |
 | Motor-only EQ | Waveform mode: six bands at 40/80/160/320/640/1280Hz, ±12dB in 0.5dB steps. Does not change speaker EQ. Reset to flat available |
+| Extra boost | Initially OFF; enabling reveals an extra-strength slider. Adds 0–200% to the existing strength (up to 3×), in waveform and intensity modes. Included in full presets/backups; hardware limits still apply |
 | Strength and protection | Waveform mode removes DC, suppresses aliasing and caps digital drive. Strength, OS media/haptic settings and mechanical response affect actual vibration |
 
 The envelope cutoff is unavailable in waveform mode; waveform EQ is unavailable in intensity mode. Master OFF, feature OFF, external output and stale/missing data stop motor output. Unsupported output is reported and stopped without silently switching modes. After required updates, toggle the feature OFF then ON to retry.
@@ -328,7 +330,7 @@ Digital dBFS is not acoustic sound pressure or motor displacement. Ceilings, aut
 
 The bass ceiling path has about 3ms latency; an active leveler adds about 5ms look-ahead per stage; IRS adds 512 samples per active convolution stage. Quality/spatial effects, motor response and output buffers also introduce latency. Zero latency and universal device/player/third-party effect compatibility are not guaranteed.
 
-v0.30 fixes repeated full-settings restoration crashes and verifies DSP continuity on identical configuration updates and clean STOP/START histories. Verification covered 20 Java/Android regression suites, 14 native suites, isolated AIDL/FMQ tests, 14 UI conditions and restoration of 461 typed settings through full presets/backups. The earlier v0.29 device check retained active music DSP during a separate haptic stream. v0.30 was tested in isolation without replacing the running APK/module. These results do not establish mechanical sound/synchronization, physical USB DAC/SRC bypass or bug-free behavior in every environment.
+v0.31 adds vibration boost verified with isolated PCM/control tests and UI operations. Reboot after updating the APK to load the new root controller; the AIDL module remains identical to v0.30. v0.30 fixes repeated full-settings restoration crashes and verifies DSP continuity on identical configuration updates and clean STOP/START histories. Verification covered 20 Java/Android regression suites, 14 native suites, isolated AIDL/FMQ tests, 14 UI conditions and restoration of 461 typed settings through full presets/backups. The earlier v0.29 device check retained active music DSP during a separate haptic stream. v0.30 was tested in isolation without replacing the running APK/module. These results do not establish mechanical sound/synchronization, physical USB DAC/SRC bypass or bug-free behavior in every environment.
 
 This repository distributes documentation and compiled releases. **Application source is not published.** Copyright © Rakkashin. All rights reserved. Compiled releases are for personal use, provided as is without warranty. Third-party components retain their respective licenses and NOTICE files.
 
@@ -339,7 +341,7 @@ This repository distributes documentation and compiled releases. **Application s
 <a id="zh"></a>
 ## 简体中文
 
-Earpiece EQ 可分别调整 Android 设备的听筒侧与底部扬声器。使用外部输出时，可分别调整左、右声道。共用 EQ、低音、音效与 HiFi 级可以与独立处理叠加。本说明适用于 **v0.30-recovery**。
+Earpiece EQ 可分别调整 Android 设备的听筒侧与底部扬声器。使用外部输出时，可分别调整左、右声道。共用 EQ、低音、音效与 HiFi 级可以与独立处理叠加。本说明适用于 **v0.31-boost**。
 
 ### 1. 安装与使用条件
 
@@ -452,6 +454,7 @@ IRS 支持单/双声道 PCM16/24/32、float32 RIFF/WAVE，以及按 48kHz 单声
 | 强弱跟随 | 将 DSP 低音包络转换为马达振幅，跟随左右较强的一侧。检测截止频率 60–200Hz，强度 1–100%；不重现原始音高 |
 | 音频波形模式（试验） | 将 DSP PCM 复制到独立触觉输出会话。保留原始频率，不做八度变换；左右取平均后发送至单个马达 |
 | 马达专用 EQ | 波形模式下提供 40/80/160/320/640/1280Hz 六段 EQ，每段 ±12dB、步进 0.5dB；不影响扬声器 EQ，可重置为平直 |
+| 额外增强 | 默认关闭；开启后显示额外强度滑块。在原强度上增加 0–200%（最高 3 倍），适用于波形与强弱模式。包含在全设置预设和备份中；仍受硬件上限限制 |
 | 强度与保护 | 波形模式去除 DC、抑制混叠并限制数字驱动量。强度、系统媒体/振动设置与设备机械特性共同决定实际振动 |
 
 波形模式中不能编辑原有包络检测截止频率；强弱模式中不能编辑波形 EQ。整体关闭、功能关闭、外部输出或数据过期/中断时停止马达。不支持时显示状态并停止，不会擅自切换至另一方式。完成必要更新后，可关闭再开启功能以重试。
@@ -494,7 +497,7 @@ dBFS 是数字信号电平，不是声压或马达位移。上限、自动调整
 
 低音上限路径约有 3ms 延迟，每个有效音量均衡级约增加 5ms 前瞻，IRS 的每个有效卷积级增加 512 个采样。质量、空间音效、马达和输出缓冲也存在延迟。不保证零延迟，也不保证所有设备、播放器及其他应用音效兼容。
 
-v0.30 修复重复恢复全部设置导致的崩溃，并验证相同格式通知下的 DSP 连续性与停止/启动时的状态清理。验证覆盖 20 套 Java/Android 回归、14 套原生测试、独立 AIDL/FMQ 测试、14 种界面条件，以及通过全设置预设/备份恢复 461 项带类型设置。此前 v0.29 的实机验证中，独立触觉输出运行时已有音乐 DSP 保持有效。本次 v0.30 使用独立测试，未替换正在运行的 APK 或模块。这些结果不证明机械发声/物理同步、实际 USB DAC/SRC 绕过或任意环境下没有缺陷。
+v0.31 新增振动增强，使用独立 PCM/控制测试及界面操作验证。更新 APK 后请重启以加载新版 root 控制器；AIDL 模块与 v0.30 相同。v0.30 修复重复恢复全部设置导致的崩溃，并验证相同格式通知下的 DSP 连续性与停止/启动时的状态清理。验证覆盖 20 套 Java/Android 回归、14 套原生测试、独立 AIDL/FMQ 测试、14 种界面条件，以及通过全设置预设/备份恢复 461 项带类型设置。此前 v0.29 的实机验证中，独立触觉输出运行时已有音乐 DSP 保持有效。本次 v0.30 使用独立测试，未替换正在运行的 APK 或模块。这些结果不证明机械发声/物理同步、实际 USB DAC/SRC 绕过或任意环境下没有缺陷。
 
 此仓库用于说明和已编译版本分发，**不公开应用源代码。** Copyright © Rakkashin. All rights reserved. 编译应用仅供个人使用，按现状提供，不作保证。第三方组件适用各自的许可证与 NOTICE。
 
