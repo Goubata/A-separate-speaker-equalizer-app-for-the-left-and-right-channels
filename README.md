@@ -7,7 +7,7 @@
 <a id="ja"></a>
 ## 日本語
 
-Androidのイヤーピース側・下スピーカー側を別々に調整するオーディオアプリです。外部出力では左・右チャンネルを調整します。個別設定に加え、両側へ適用する共通EQ・共通低音・共通FX・共通HiFiを重ねて使えます。この説明は **v0.29-waveform** を対象にしています。
+Androidのイヤーピース側・下スピーカー側を別々に調整するオーディオアプリです。外部出力では左・右チャンネルを調整します。個別設定に加え、両側へ適用する共通EQ・共通低音・共通FX・共通HiFiを重ねて使えます。この説明は **v0.30-recovery** を対象にしています。
 
 ### 1. 導入・必要条件
 
@@ -21,7 +21,7 @@ Androidのイヤーピース側・下スピーカー側を別々に調整する�
 | 外部出力の自動識別 | Android 13以降のメディア出力先情報 |
 | USBレート追従 | root、Android 14以降、対応USB出力、同じ出力上で有効な専用DSP |
 
-**同梱モジュールはAndroid 16・arm64・AIDL effect HAL v3向けです。** SoC名だけでは対応を判定できず、すべての端末で動く汎用モジュールではありません。現在の機能一式には同梱v0.29を使用してください。
+**同梱モジュールはAndroid 16・arm64・AIDL effect HAL v3向けです。** SoC名だけでは対応を判定できず、すべての端末で動く汎用モジュールではありません。現在の機能一式には同梱v0.30を使用してください。
 
 1. ReleasesのAPKをインストールします。同じアプリID・署名での上書き更新は既存設定を引き継ぎます。
 2. アプリを開き、通知を許可します。再起動後の自動開始を使う場合はバッテリー最適化の除外も設定します。
@@ -162,7 +162,7 @@ dBFSはデジタル信号の値で、音圧dBや振動量ではありません�
 
 低域上限の経路は約3ms、音量均等化は有効段ごとに約5msの先読み、IRSは有効な畳み込み段ごとに512サンプルの遅延があります。処理品質や空間エフェクトにも遅延があり、モーターと出力バッファにも遅延があります。ゼロ遅延・全端末/全プレーヤー/全他社エフェクトとの共存は保証できません。
 
-v0.29ではJava/Android回帰20スイート、ネイティブ14スイート、独立AIDL/FMQ試験、14画面条件、461項目の全設定プリセット/バックアップ復元を確認しました。独立した振動用出力中に既存音楽DSPが有効であることも確認しています。これは試験範囲での結果であり、機械的な発音・物理同期・実USB DAC/SRC回避・任意環境の不具合ゼロの保証ではありません。
+v0.30では、全設定復元の連続操作によるクラッシュを修正し、同一形式通知時のDSP継続と停止・再開時の内部状態を検証しました。Java/Android回帰20スイート、ネイティブ14スイート、独立AIDL/FMQ試験、14画面条件、461項目の全設定プリセット/バックアップ復元を確認しました。独立した振動用出力中に既存音楽DSPが有効であることはv0.29で確認しています。今回のv0.30は独立テストで検証し、使用中のAPK・モジュールは変更していません。これは試験範囲での結果であり、機械的な発音・物理同期・実USB DAC/SRC回避・任意環境の不具合ゼロの保証ではありません。
 
 このリポジトリは説明とビルド済み成果物の配布用です。**アプリのソースコードは公開していません。** Copyright © Rakkashin. All rights reserved. ビルド済みアプリは個人利用向けに現状有姿で提供し、保証はありません。第三者コンポーネントには各ライセンス/NOTICEが適用されます。
 
@@ -173,7 +173,7 @@ v0.29ではJava/Android回帰20スイート、ネイティブ14スイート、�
 <a id="en"></a>
 ## English
 
-Earpiece EQ adjusts the earpiece and bottom speaker independently. With external outputs, it adjusts left and right channels. Common EQ, bass, FX and HiFi stages can be stacked with individual processing. This manual describes **v0.29-waveform**.
+Earpiece EQ adjusts the earpiece and bottom speaker independently. With external outputs, it adjusts left and right channels. Common EQ, bass, FX and HiFi stages can be stacked with individual processing. This manual describes **v0.30-recovery**.
 
 ### 1. Installation and requirements
 
@@ -187,7 +187,7 @@ Earpiece EQ adjusts the earpiece and bottom speaker independently. With external
 | Automatic external device identification | Android 13+ media routing information |
 | USB rate follow | Root, Android 14+, compatible USB output and active companion DSP on that output |
 
-**The bundled module targets Android 16, arm64 and AIDL effect HAL v3.** SoC branding alone cannot determine compatibility; this is not a universal module. Use bundled v0.29 for the current feature set.
+**The bundled module targets Android 16, arm64 and AIDL effect HAL v3.** SoC branding alone cannot determine compatibility; this is not a universal module. Use bundled v0.30 for the current feature set.
 
 1. Install the APK from Releases. Updating with the same app ID and signature preserves existing settings.
 2. Open the app and allow notifications. For automatic startup, also review battery optimization exemptions.
@@ -328,7 +328,7 @@ Digital dBFS is not acoustic sound pressure or motor displacement. Ceilings, aut
 
 The bass ceiling path has about 3ms latency; an active leveler adds about 5ms look-ahead per stage; IRS adds 512 samples per active convolution stage. Quality/spatial effects, motor response and output buffers also introduce latency. Zero latency and universal device/player/third-party effect compatibility are not guaranteed.
 
-v0.29 verification covered 20 Java/Android regression suites, 14 native suites, isolated AIDL/FMQ tests, 14 UI conditions and restoration of 461 typed settings through full presets/backups. Existing music DSP remained active during a separate haptic stream. These results do not establish mechanical sound/synchronization, physical USB DAC/SRC bypass or bug-free behavior in every environment.
+v0.30 fixes repeated full-settings restoration crashes and verifies DSP continuity on identical configuration updates and clean STOP/START histories. Verification covered 20 Java/Android regression suites, 14 native suites, isolated AIDL/FMQ tests, 14 UI conditions and restoration of 461 typed settings through full presets/backups. The earlier v0.29 device check retained active music DSP during a separate haptic stream. v0.30 was tested in isolation without replacing the running APK/module. These results do not establish mechanical sound/synchronization, physical USB DAC/SRC bypass or bug-free behavior in every environment.
 
 This repository distributes documentation and compiled releases. **Application source is not published.** Copyright © Rakkashin. All rights reserved. Compiled releases are for personal use, provided as is without warranty. Third-party components retain their respective licenses and NOTICE files.
 
@@ -339,7 +339,7 @@ This repository distributes documentation and compiled releases. **Application s
 <a id="zh"></a>
 ## 简体中文
 
-Earpiece EQ 可分别调整 Android 设备的听筒侧与底部扬声器。使用外部输出时，可分别调整左、右声道。共用 EQ、低音、音效与 HiFi 级可以与独立处理叠加。本说明适用于 **v0.29-waveform**。
+Earpiece EQ 可分别调整 Android 设备的听筒侧与底部扬声器。使用外部输出时，可分别调整左、右声道。共用 EQ、低音、音效与 HiFi 级可以与独立处理叠加。本说明适用于 **v0.30-recovery**。
 
 ### 1. 安装与使用条件
 
@@ -353,7 +353,7 @@ Earpiece EQ 可分别调整 Android 设备的听筒侧与底部扬声器。使�
 | 外部设备自动识别 | Android 13 以上媒体路由信息 |
 | USB 采样率跟随 | root、Android 14 以上、兼容 USB 输出，以及同一输出上的有效专用 DSP |
 
-**附带模块面向 Android 16、arm64 和 AIDL effect HAL v3。** 不能仅按 SoC 品牌判断兼容性，也不是适用于所有设备的通用模块。当前完整功能请使用附带的 v0.29 模块。
+**附带模块面向 Android 16、arm64 和 AIDL effect HAL v3。** 不能仅按 SoC 品牌判断兼容性，也不是适用于所有设备的通用模块。当前完整功能请使用附带的 v0.30 模块。
 
 1. 从 Releases 安装 APK。使用相同应用 ID 和签名覆盖更新，可保留已有设置。
 2. 打开应用并允许通知。若使用自动启动，也请检查电池优化豁免。
@@ -494,7 +494,7 @@ dBFS 是数字信号电平，不是声压或马达位移。上限、自动调整
 
 低音上限路径约有 3ms 延迟，每个有效音量均衡级约增加 5ms 前瞻，IRS 的每个有效卷积级增加 512 个采样。质量、空间音效、马达和输出缓冲也存在延迟。不保证零延迟，也不保证所有设备、播放器及其他应用音效兼容。
 
-v0.29 验证覆盖 20 套 Java/Android 回归、14 套原生测试、独立 AIDL/FMQ 测试、14 种界面条件，以及通过全设置预设/备份恢复 461 项带类型设置。独立触觉输出运行时，已有音乐 DSP 保持有效。这些结果不证明机械发声/物理同步、实际 USB DAC/SRC 绕过或任意环境下没有缺陷。
+v0.30 修复重复恢复全部设置导致的崩溃，并验证相同格式通知下的 DSP 连续性与停止/启动时的状态清理。验证覆盖 20 套 Java/Android 回归、14 套原生测试、独立 AIDL/FMQ 测试、14 种界面条件，以及通过全设置预设/备份恢复 461 项带类型设置。此前 v0.29 的实机验证中，独立触觉输出运行时已有音乐 DSP 保持有效。本次 v0.30 使用独立测试，未替换正在运行的 APK 或模块。这些结果不证明机械发声/物理同步、实际 USB DAC/SRC 绕过或任意环境下没有缺陷。
 
 此仓库用于说明和已编译版本分发，**不公开应用源代码。** Copyright © Rakkashin. All rights reserved. 编译应用仅供个人使用，按现状提供，不作保证。第三方组件适用各自的许可证与 NOTICE。
 
