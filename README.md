@@ -7,7 +7,7 @@
 <a id="ja"></a>
 ## 日本語
 
-Androidのイヤーピース側・下スピーカー側を別々に調整するオーディオアプリです。外部出力では左・右チャンネルを調整します。個別設定に加え、両側へ適用する共通EQ・共通低音・共通FX・共通HiFiを重ねて使えます。この説明は **v0.32-stability** を対象にしています。
+Androidのイヤーピース側・下スピーカー側を別々に調整するオーディオアプリです。外部出力では左・右チャンネルを調整します。個別設定に加え、両側へ適用する共通EQ・共通低音・共通FX・共通HiFiを重ねて使えます。この説明は **v0.33-stability** を対象にしています。
 
 ### 1. 導入・必要条件
 
@@ -159,7 +159,7 @@ IRSはモノラル/ステレオのPCM16/24/32・float32 RIFF/WAVE、または48k
 
 ### 12. 音量・遅延・検証・配布
 
-v0.32では、再生中の全体OFF→ONに関わるPID起動判定、制御ファイルの世代一致、全設定反映後の有効化、素早い切替時の再初期化を修正しました。レガシー時は再生・出力・エンジンのイベント後に実際の順序を非同期で確認し、自分のEQが低音処理の後ろへ移った場合に並べ直します。確認はイベントごとの有限回で、常時ポーリングはしません。スピーカー音声のDSPアルゴリズムとモジュールはv0.30と同一です。実音楽の改善は更新後の確認が必要です。
+v0.33では、同じEQ種類に複数の実装が登録された端末で別実装が選ばれる問題に対応しました。この場合はroot補助でAndroid EQの実装IDを明示し、設定の読み戻し後に有効化します。通常の端末では従来の標準APIを使います。旧版v0.32では、再生中の全体OFF→ONに関わるPID起動判定、制御ファイルの世代一致、全設定反映後の有効化、素早い切替時の再初期化を修正しました。レガシー時は再生・出力・エンジンのイベント後に実際の順序を非同期で確認し、自分のEQが低音処理の後ろへ移った場合に並べ直します。確認はイベントごとの有限回で、常時ポーリングはしません。スピーカー音声のDSPアルゴリズムとモジュールはv0.30と同一です。実音楽の改善は更新後の確認が必要です。
 
 dBFSはデジタル信号の値で、音圧dBや振動量ではありません。上限・自動調整・音量均等化は、すべての曲を完全に同じ聴感へ揃えたり、既に割れた音を修復したりする機能ではありません。小さい音量から調整してください。共通段を重ねると処理量も増えます。
 
@@ -176,7 +176,7 @@ v0.31の追加ブーストは独立したPCM/制御試験と画面操作で検�
 <a id="en"></a>
 ## English
 
-Earpiece EQ adjusts the earpiece and bottom speaker independently. With external outputs, it adjusts left and right channels. Common EQ, bass, FX and HiFi stages can be stacked with individual processing. This manual describes **v0.32-stability**.
+Earpiece EQ adjusts the earpiece and bottom speaker independently. With external outputs, it adjusts left and right channels. Common EQ, bass, FX and HiFi stages can be stacked with individual processing. This manual describes **v0.33-stability**.
 
 ### 1. Installation and requirements
 
@@ -328,7 +328,7 @@ New devices start with processing OFF and flat settings. External output allows 
 
 ### 12. Levels, latency, verification and distribution
 
-v0.32 fixes PID readiness parsing, paired control-file generations, activation after all configuration/readback, and resets after rapid master toggles. Legacy mode performs a bounded burst of asynchronous checks after playback/output/engine events, repairing this app’s EQ if it follows bass processing. No perpetual polling. Speaker DSP algorithms and module remain identical to v0.30. Listening on the updated device remains necessary.
+v0.33 explicitly selects the Android EQ implementation through root assistance when multiple implementations claim its effect type. It verifies settings before activation; unambiguous devices retain the public Android API. Previous v0.32 fixes PID readiness parsing, paired control-file generations, activation after all configuration/readback, and resets after rapid master toggles. Legacy mode performs a bounded burst of asynchronous checks after playback/output/engine events, repairing this app’s EQ if it follows bass processing. No perpetual polling. Speaker DSP algorithms and module remain identical to v0.30. Listening on the updated device remains necessary.
 
 Digital dBFS is not acoustic sound pressure or motor displacement. Ceilings, automatic adjustment and leveling cannot guarantee identical perceived loudness or repair existing distortion. Start at low volume. Stacking stages increases processing.
 
@@ -345,7 +345,7 @@ This repository distributes documentation and compiled releases. **Application s
 <a id="zh"></a>
 ## 简体中文
 
-Earpiece EQ 可分别调整 Android 设备的听筒侧与底部扬声器。使用外部输出时，可分别调整左、右声道。共用 EQ、低音、音效与 HiFi 级可以与独立处理叠加。本说明适用于 **v0.32-stability**。
+Earpiece EQ 可分别调整 Android 设备的听筒侧与底部扬声器。使用外部输出时，可分别调整左、右声道。共用 EQ、低音、音效与 HiFi 级可以与独立处理叠加。本说明适用于 **v0.33-stability**。
 
 ### 1. 安装与使用条件
 
@@ -497,7 +497,7 @@ IRS 支持单/双声道 PCM16/24/32、float32 RIFF/WAVE，以及按 48kHz 单声
 
 ### 12. 电平、延迟、验证与分发
 
-v0.32 修复 PID 就绪解析、控制文件配对、完成全部设置及读回后再启用，以及快速切换整体开关后的重新初始化。传统模式在播放/输出/引擎事件后进行有限次数的异步检查；若本应用 EQ 位于低音处理之后，则重新排列本应用 EQ。不会持续轮询。扬声器 DSP 算法及模块与 v0.30 相同，更新后仍需实机听音确认。
+v0.33 在同一 EQ 类型注册了多个实现的设备上，通过 root 辅助明确选择 Android EQ 实现，并在读回验证后启用。没有冲突的设备继续使用公开 Android API。之前的 v0.32 修复 PID 就绪解析、控制文件配对、完成全部设置及读回后再启用，以及快速切换整体开关后的重新初始化。传统模式在播放/输出/引擎事件后进行有限次数的异步检查；若本应用 EQ 位于低音处理之后，则重新排列本应用 EQ。不会持续轮询。扬声器 DSP 算法及模块与 v0.30 相同，更新后仍需实机听音确认。
 
 dBFS 是数字信号电平，不是声压或马达位移。上限、自动调整和音量均衡不能保证所有曲目听感完全一致，也不能修复已有失真。请从较小音量开始；叠加更多级会增加处理量。
 
