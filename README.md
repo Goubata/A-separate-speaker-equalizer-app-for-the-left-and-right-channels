@@ -7,7 +7,7 @@
 <a id="ja"></a>
 ## 日本語
 
-Androidのイヤーピース側・下スピーカー側を別々に調整するオーディオアプリです。外部出力では左・右チャンネルを調整します。個別設定に加え、両側へ適用する共通EQ・共通低音・共通FX・共通HiFiを重ねて使えます。この説明は **v0.35-material** を対象にしています。
+Androidのイヤーピース側・下スピーカー側を別々に調整するオーディオアプリです。外部出力では左・右チャンネルを調整します。個別設定に加え、両側へ適用する共通EQ・共通低音・共通FX・共通HiFiを重ねて使えます。この説明は **v0.36-material** を対象にしています。
 
 ### 1. 導入・必要条件
 
@@ -45,7 +45,7 @@ adb shell pm grant rakkashin.earpieceeq android.permission.DUMP
 
 ### 3. 個別EQ・共通EQ
 
-1〜32バンド、各バンド **−50〜+50 dB**、プリアンプ **−12〜+12 dB**。約31Hz〜20kHzの制御点の間を対数周波数上で滑らかに補間します。バンド数ごとにゲインを記憶し、バンド数を戻すとその調整値へ戻ります。フラットへのリセットも可能です。1バンドでは全体のゲインを調整します。プリアンプ込みの周波数特性グラフをDSPと同じ補間で表示し、各スライダーの「−／＋」で0.5dBずつ微調整できます。
+1〜32バンド、各バンド **−50〜+50 dB**、プリアンプ **−12〜+12 dB**。約31Hz〜20kHzの制御点の間を対数周波数上で滑らかに補間します。バンド数ごとにゲインを記憶し、バンド数を戻すとその調整値へ戻ります。フラットへのリセットも可能です。1バンドでは全体のゲインを調整します。プリアンプ込みの周波数特性グラフをDSPと同じ補間で表示し、各スライダーの「−／＋」で0.5dBずつ微調整できます。グラフには帯域名・目盛り・各バンドの点と値・最大/最小を表示し、触れた位置の周波数と値を読み取れます。点をつかんで上下にドラッグすると、そのバンドを直接調整できます。
 
 個別EQは編集対象の片側へ、共通EQは独立したスイッチと設定で両側へ適用します。共通EQだけのプリセットも保存できます。
 
@@ -151,6 +151,7 @@ IRSはモノラル/ステレオのPCM16/24/32・float32 RIFF/WAVE、または48k
 
 - EQ、共通EQ、低音、共通低音、FX、共通FX、HiFi、バイブレーション、品質、プリセット、設定、ステータスの12メニュー。
 - Material風カード/タブ、システムバーの表示調整、ライト/ダーク、大きな文字、横画面に対応。アプリアイコンには黒い縁取りがあります。
+- ページ領域を左右にスワイプすると前後のメニューへ移動（スライダーやグラフの上からの操作は除く）。
 - EQ・低音・共通低音・バイブレーションのスライダーに「−／＋」ボタン。前回開いていたメニューを次回起動時に表示します（表示状態は音声設定・バックアップとは別に保存）。
 - 端末が日本語なら日本語、中国語なら簡体字中国語、それ以外は英語。ユーザーが付けた機器名・プリセット名は翻訳しません。
 - クイック設定タイルで全体ON/OFF。再起動/アプリ更新後の自動開始は、保存済み処理ONと自動開始設定に従います。通知とバッテリー最適化設定を確認できます。
@@ -159,6 +160,8 @@ IRSはモノラル/ステレオのPCM16/24/32・float32 RIFF/WAVE、または48k
 - 手動セッション適用、再スキャン、`dumpsys`のセッション行取得、診断ログ表示・全文コピーに対応。
 
 ### 12. 音量・遅延・検証・配布
+
+v0.36では、メニューの左右スワイプ移動と、EQグラフの強化（帯域・目盛り・各バンドの値・最大/最小・触れた位置の読み取り・点のドラッグによる直接調整）を追加しました。設定形式は変更なし、モジュールはv0.30のままです。端末上の回帰24スイートに合格。
 
 v0.35では、EQカーブ表示・−／＋微調整・確認ダイアログ・モーター追加ブースト最大300%を追加しました。スライダー操作時のDSP更新をバックグラウンドで集約してカクつきを抑え、クイック設定タイル操作時のスイッチ表示、テスト音再生失敗時の終了、古いバックアップの不正値の扱いを修正しました。設定形式は変更せず、v0.34からの上書き更新で設定はそのまま引き継がれます（実機で更新前後の設定ファイル一致を確認）。端末上の回帰23スイートに合格。AIDLモジュールはv0.30のままで再導入は不要です。更新後は端末を再起動してください。
 
@@ -179,7 +182,7 @@ v0.31の追加ブーストは独立したPCM/制御試験と画面操作で検�
 <a id="en"></a>
 ## English
 
-Earpiece EQ adjusts the earpiece and bottom speaker independently. With external outputs, it adjusts left and right channels. Common EQ, bass, FX and HiFi stages can be stacked with individual processing. This manual describes **v0.35-material**.
+Earpiece EQ adjusts the earpiece and bottom speaker independently. With external outputs, it adjusts left and right channels. Common EQ, bass, FX and HiFi stages can be stacked with individual processing. This manual describes **v0.36-material**.
 
 ### 1. Installation and requirements
 
@@ -217,7 +220,7 @@ adb shell pm grant rakkashin.earpieceeq android.permission.DUMP
 
 ### 3. Individual and common EQ
 
-Choose 1–32 bands, **−50 to +50 dB per band**, and **−12 to +12 dB preamp**. Control points span approximately 31Hz–20kHz, with smooth interpolation on a logarithmic frequency axis. Each band count remembers its own gains; switching back recalls them. Reset to flat is available. A single band adjusts the overall gain. A response graph (preamp included, same interpolation as the DSP) is shown, and each slider has −/+ buttons for 0.5 dB steps.
+Choose 1–32 bands, **−50 to +50 dB per band**, and **−12 to +12 dB preamp**. Control points span approximately 31Hz–20kHz, with smooth interpolation on a logarithmic frequency axis. Each band count remembers its own gains; switching back recalls them. Reset to flat is available. A single band adjusts the overall gain. A response graph (preamp included, same interpolation as the DSP) is shown, and each slider has −/+ buttons for 0.5 dB steps. The graph shows frequency regions, scales, each band as a dot with its value, and the maximum/minimum; touch it to read the frequency and level at that point, or drag a dot up/down to adjust that band directly.
 
 Individual EQ applies to the selected output side. Common EQ has its own switch and settings for both sides, plus dedicated common-EQ presets.
 
@@ -323,6 +326,7 @@ New devices start with processing OFF and flat settings. External output allows 
 
 - Twelve menus: EQ, Common EQ, Bass, Common bass, FX, Common FX, HiFi, Vibration, Quality, Presets, Settings and Status.
 - Material-style cards/tabs, system-bar appearance adjustments, light/dark modes, large text and landscape support. The app icon has a black outline.
+- Swipe left/right on the page area to move to the next/previous menu (not when starting on a slider or the graph).
 - −/+ step buttons on EQ, bass, common-bass and vibration sliders. The last opened menu is restored on the next launch (stored separately from audio settings and backups).
 - Japanese device language selects Japanese; all Chinese locales select Simplified Chinese; every other language selects English. User device/preset names remain unchanged.
 - Quick Settings tile toggles master processing. Automatic startup after reboot/app update follows saved processing and startup settings. Notification and battery optimization controls are available.
@@ -331,6 +335,8 @@ New devices start with processing OFF and flat settings. External output allows 
 - Manual session attachment, rescanning, `dumpsys` session-line collection, log display and full-log copying are available.
 
 ### 12. Levels, latency, verification and distribution
+
+v0.36 adds left/right swipe navigation between menus and an enhanced EQ graph (regions, scales, per-band values, max/min, touch readout and drag-to-adjust dots). The settings format is unchanged and the module remains v0.30. 24 regression suites pass on device.
 
 v0.35 adds an EQ response graph, −/+ fine adjustment, confirmation dialogs and up to 300% motor boost. Slider changes are now applied to the DSP in the background and coalesced to avoid stutter; the master switch now follows Quick Settings tile changes; a failed test tone no longer closes the app; invalid values in old backups are sanitized. The settings format is unchanged and updating from v0.34 keeps all settings (verified on device by comparing settings files before and after). 23 regression suites pass on device. The AIDL module remains v0.30; reinstalling it is unnecessary. Reboot after updating.
 
@@ -351,7 +357,7 @@ This repository distributes documentation and compiled releases. **Application s
 <a id="zh"></a>
 ## 简体中文
 
-Earpiece EQ 可分别调整 Android 设备的听筒侧与底部扬声器。使用外部输出时，可分别调整左、右声道。共用 EQ、低音、音效与 HiFi 级可以与独立处理叠加。本说明适用于 **v0.35-material**。
+Earpiece EQ 可分别调整 Android 设备的听筒侧与底部扬声器。使用外部输出时，可分别调整左、右声道。共用 EQ、低音、音效与 HiFi 级可以与独立处理叠加。本说明适用于 **v0.36-material**。
 
 ### 1. 安装与使用条件
 
@@ -389,7 +395,7 @@ adb shell pm grant rakkashin.earpieceeq android.permission.DUMP
 
 ### 3. 独立 EQ 与共用 EQ
 
-支持 1–32 个频段，每段 **−50 至 +50 dB**，前级增益 **−12 至 +12 dB**。控制点约覆盖 31Hz–20kHz，在对数频率轴上平滑插值。每种频段数量分别记忆增益，切回时恢复对应设置。支持重置为平直。仅使用一个频段时调整整体增益。显示包含前级增益的频率响应曲线（与 DSP 使用相同插值），每个滑块带有 −/+ 按钮，可按 0.5 dB 微调。
+支持 1–32 个频段，每段 **−50 至 +50 dB**，前级增益 **−12 至 +12 dB**。控制点约覆盖 31Hz–20kHz，在对数频率轴上平滑插值。每种频段数量分别记忆增益，切回时恢复对应设置。支持重置为平直。仅使用一个频段时调整整体增益。显示包含前级增益的频率响应曲线（与 DSP 使用相同插值），每个滑块带有 −/+ 按钮，可按 0.5 dB 微调。曲线显示频段区域、刻度、各频段圆点及数值和最大/最小值；触摸可读取该位置的频率与电平，按住圆点上下拖动可直接调整该频段。
 
 独立 EQ 应用于所选输出侧；共用 EQ 使用独立开关与设置作用于两侧，并提供专用共用 EQ 预设。
 
@@ -495,6 +501,7 @@ IRS 支持单/双声道 PCM16/24/32、float32 RIFF/WAVE，以及按 48kHz 单声
 
 - 共 12 个菜单：EQ、共用 EQ、低音、共用低音、音效、共用音效、HiFi、振动、质量、预设、设置、状态。
 - Material 风格卡片/标签、系统栏显示调整、浅色/深色、大字体和横屏支持；应用图标带黑色边框。
+- 在页面区域左右滑动可切换到前/后菜单（从滑块或曲线上开始的操作除外）。
 - EQ、低音、共用低音和振动滑块带有 −/+ 按钮。下次启动时显示上次打开的菜单（与音频设置和备份分开保存）。
 - 日语设备显示日语；所有中文区域显示简体中文；其余语言显示英语。用户设备名和预设名不翻译。
 - 快捷设置磁贴切换整体处理。重启/应用更新后的自动启动遵循已保存处理状态及自动启动设置；可检查通知和电池优化。
@@ -503,6 +510,8 @@ IRS 支持单/双声道 PCM16/24/32、float32 RIFF/WAVE，以及按 48kHz 单声
 - 支持手动会话应用、重新扫描、获取 `dumpsys` 会话行、显示诊断日志和复制完整日志。
 
 ### 12. 电平、延迟、验证与分发
+
+v0.36 新增菜单左右滑动切换，并增强 EQ 曲线（频段区域、刻度、各频段数值、最大/最小、触摸读数及拖动圆点直接调整）。设置格式不变，模块仍为 v0.30。设备上 24 套回归测试通过。
 
 v0.35 新增 EQ 频响曲线、−/+ 微调、确认对话框，并将马达额外增强上限提高到 300%。滑块调整改为在后台合并后应用到 DSP，减少卡顿；修复快速设置磁贴切换后开关显示不同步、测试音播放失败导致退出，以及旧备份中无效数值的处理。设置格式不变，从 v0.34 覆盖更新会完整保留设置（已在设备上比对更新前后的设置文件）。设备上 23 套回归测试通过。AIDL 模块仍为 v0.30，无需重新安装。更新后请重启设备。
 
