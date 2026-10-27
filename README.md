@@ -7,7 +7,7 @@
 <a id="ja"></a>
 ## 日本語
 
-Androidのイヤーピース側・下スピーカー側を別々に調整するオーディオアプリです。外部出力では左・右チャンネルを調整します。個別設定に加え、両側へ適用する共通EQ・共通低音・共通FX・共通HiFiを重ねて使えます。この説明は **v0.34-stability** を対象にしています。
+Androidのイヤーピース側・下スピーカー側を別々に調整するオーディオアプリです。外部出力では左・右チャンネルを調整します。個別設定に加え、両側へ適用する共通EQ・共通低音・共通FX・共通HiFiを重ねて使えます。この説明は **v0.35-material** を対象にしています。
 
 ### 1. 導入・必要条件
 
@@ -45,7 +45,7 @@ adb shell pm grant rakkashin.earpieceeq android.permission.DUMP
 
 ### 3. 個別EQ・共通EQ
 
-1〜32バンド、各バンド **−50〜+50 dB**、プリアンプ **−12〜+12 dB**。約31Hz〜20kHzの制御点の間を対数周波数上で滑らかに補間します。バンド数ごとにゲインを記憶し、バンド数を戻すとその調整値へ戻ります。フラットへのリセットも可能です。1バンドでは全体のゲインを調整します。
+1〜32バンド、各バンド **−50〜+50 dB**、プリアンプ **−12〜+12 dB**。約31Hz〜20kHzの制御点の間を対数周波数上で滑らかに補間します。バンド数ごとにゲインを記憶し、バンド数を戻すとその調整値へ戻ります。フラットへのリセットも可能です。1バンドでは全体のゲインを調整します。プリアンプ込みの周波数特性グラフをDSPと同じ補間で表示し、各スライダーの「−／＋」で0.5dBずつ微調整できます。
 
 個別EQは編集対象の片側へ、共通EQは独立したスイッチと設定で両側へ適用します。共通EQだけのプリセットも保存できます。
 
@@ -120,7 +120,7 @@ IRSはモノラル/ステレオのPCM16/24/32・float32 RIFF/WAVE、または48k
 | 強弱連動 | DSPの低音包絡をモーターの強さへ変換。左右の強い方へ追従。検出上限60〜200Hz、強さ1〜100%。元の音程を再生する方式ではありません |
 | 音声波形モード（試験機能） | DSPのPCMコピーを別セッションの振動用出力へ送る。オクターブ変換せず元の周波数を保持。左右を平均して1つのモーターへ送る |
 | モーター専用EQ | 波形モードで40/80/160/320/640/1280Hzの6バンド、各±12dB・0.5dB刻み。スピーカーEQには影響しない。フラットへリセット可能 |
-| 追加ブースト | 初期OFF。ONで追加強度スライダーを表示。元の強さに0〜200%を加算（最大3倍）。波形・強弱連動の両方式に適用。全設定プリセットとバックアップへ保存。端末側の上限を超えることはできない |
+| 追加ブースト | 初期OFF。ONで追加強度スライダーを表示。元の強さに0〜300%を加算（最大4倍）。波形・強弱連動の両方式に適用。全設定プリセットとバックアップへ保存。端末側の上限を超えることはできない |
 | 強さと保護 | 波形モードはDC除去・折返し抑制・デジタル駆動量制限を行う。強さとOS側のメディア/振動設定、端末の機械特性が実際の振動に影響 |
 
 波形モード中は従来の検出上限を編集できず、強弱連動モード中は波形用EQを編集できません。全体OFF・機能OFF・外部出力・古い/停止したデータでは停止します。非対応なら状態に表示して停止し、別方式へ黙って切り替えません。必要な更新後は機能をOFF→ONにして再試行できます。
@@ -137,7 +137,7 @@ IRSはモノラル/ステレオのPCM16/24/32・float32 RIFF/WAVE、または48k
 | 全設定プリセット | 本体と保存済みの全外部機器の音声/動作設定。処理ON/OFF、レガシー、回転、自動開始、USB追従、モーターのモード/強さ/EQなども含む |
 | 外部デバイス用プリセット | 選択した機器専用の音声設定、処理ON/OFF、レガシー。対象機器名と短い識別IDを一覧表示。未接続機器も選べ、適用はその機器だけへ反映 |
 
-名前を付けて保存・呼び出し/適用・削除できます。同じ名前での保存は上書きです。**すべての設定を戻したい場合は「全設定プリセット」を使用してください。** 全設定プリセットは現在の物理的な接続先・プリセット一覧・Androidの権限・導入済みモジュールを復元/変更するものではありません。
+名前を付けて保存・呼び出し/適用・削除できます。同じ名前で保存すると確認後に上書きします。削除・全設定の復元・フラットに戻す操作の前にも確認を表示します。**すべての設定を戻したい場合は「全設定プリセット」を使用してください。** 全設定プリセットは現在の物理的な接続先・プリセット一覧・Androidの権限・導入済みモジュールを復元/変更するものではありません。
 
 通常バックアップはJSONファイル/クリップボードへ書き出し・読み込みでき、旧`eq.xml`、保存済みプリセット、IRSデータの移行にも対応します。取り込みだけで処理ONや全設定プリセットの適用は行いません。外部プリセットは個別/全件のJSONファイル入出力に対応し、機器の関連付けと利用可能なIRSも含めます。外部用ファイルの取り込みだけでは音声設定を変更しません。モーター設定は全設定/通常バックアップへ含め、外部専用プリセットからは除外します。
 
@@ -151,6 +151,7 @@ IRSはモノラル/ステレオのPCM16/24/32・float32 RIFF/WAVE、または48k
 
 - EQ、共通EQ、低音、共通低音、FX、共通FX、HiFi、バイブレーション、品質、プリセット、設定、ステータスの12メニュー。
 - Material風カード/タブ、システムバーの表示調整、ライト/ダーク、大きな文字、横画面に対応。アプリアイコンには黒い縁取りがあります。
+- EQ・低音・共通低音・バイブレーションのスライダーに「−／＋」ボタン。前回開いていたメニューを次回起動時に表示します（表示状態は音声設定・バックアップとは別に保存）。
 - 端末が日本語なら日本語、中国語なら簡体字中国語、それ以外は英語。ユーザーが付けた機器名・プリセット名は翻訳しません。
 - クイック設定タイルで全体ON/OFF。再起動/アプリ更新後の自動開始は、保存済み処理ONと自動開始設定に従います。通知とバッテリー最適化設定を確認できます。
 - 1kHzの片側テスト音とEQ込みテスト音で、スピーカー割当・適用を確認可能。グローバル処理が有効なら通常のテスト音にも適用されます。
@@ -158,6 +159,8 @@ IRSはモノラル/ステレオのPCM16/24/32・float32 RIFF/WAVE、または48k
 - 手動セッション適用、再スキャン、`dumpsys`のセッション行取得、診断ログ表示・全文コピーに対応。
 
 ### 12. 音量・遅延・検証・配布
+
+v0.35では、EQカーブ表示・−／＋微調整・確認ダイアログ・モーター追加ブースト最大300%を追加しました。スライダー操作時のDSP更新をバックグラウンドで集約してカクつきを抑え、クイック設定タイル操作時のスイッチ表示、テスト音再生失敗時の終了、古いバックアップの不正値の扱いを修正しました。設定形式は変更せず、v0.34からの上書き更新で設定はそのまま引き継がれます（実機で更新前後の設定ファイル一致を確認）。端末上の回帰23スイートに合格。AIDLモジュールはv0.30のままで再導入は不要です。更新後は端末を再起動してください。
 
 v0.34では、個別EQがセッション検出用root設定のOFFで停止していた不具合を修正しました。この設定はdumpsysの取得方法だけを制御し、EQやAIDL処理の起動とは独立です。左右のプリアンプ・バンド・適用ON/OFFを個別に反映し、AIDLで片側OFFが無視される場合の互換処理も加えました。v0.33では、同じEQ種類に複数の実装が登録された端末で別実装が選ばれる問題に対応しました。この場合はroot補助でAndroid EQの実装IDを明示し、設定の読み戻し後に有効化します。通常の端末では従来の標準APIを使います。旧版v0.32では、再生中の全体OFF→ONに関わるPID起動判定、制御ファイルの世代一致、全設定反映後の有効化、素早い切替時の再初期化を修正しました。レガシー時は再生・出力・エンジンのイベント後に実際の順序を非同期で確認し、自分のEQが低音処理の後ろへ移った場合に並べ直します。確認はイベントごとの有限回で、常時ポーリングはしません。スピーカー音声のDSPアルゴリズムとモジュールはv0.30と同一です。実音楽の改善は更新後の確認が必要です。
 
@@ -176,7 +179,7 @@ v0.31の追加ブーストは独立したPCM/制御試験と画面操作で検�
 <a id="en"></a>
 ## English
 
-Earpiece EQ adjusts the earpiece and bottom speaker independently. With external outputs, it adjusts left and right channels. Common EQ, bass, FX and HiFi stages can be stacked with individual processing. This manual describes **v0.34-stability**.
+Earpiece EQ adjusts the earpiece and bottom speaker independently. With external outputs, it adjusts left and right channels. Common EQ, bass, FX and HiFi stages can be stacked with individual processing. This manual describes **v0.35-material**.
 
 ### 1. Installation and requirements
 
@@ -214,7 +217,7 @@ adb shell pm grant rakkashin.earpieceeq android.permission.DUMP
 
 ### 3. Individual and common EQ
 
-Choose 1–32 bands, **−50 to +50 dB per band**, and **−12 to +12 dB preamp**. Control points span approximately 31Hz–20kHz, with smooth interpolation on a logarithmic frequency axis. Each band count remembers its own gains; switching back recalls them. Reset to flat is available. A single band adjusts the overall gain.
+Choose 1–32 bands, **−50 to +50 dB per band**, and **−12 to +12 dB preamp**. Control points span approximately 31Hz–20kHz, with smooth interpolation on a logarithmic frequency axis. Each band count remembers its own gains; switching back recalls them. Reset to flat is available. A single band adjusts the overall gain. A response graph (preamp included, same interpolation as the DSP) is shown, and each slider has −/+ buttons for 0.5 dB steps.
 
 Individual EQ applies to the selected output side. Common EQ has its own switch and settings for both sides, plus dedicated common-EQ presets.
 
@@ -289,7 +292,7 @@ Built-in output only. Enable master processing and motor output. Initially OFF, 
 | Intensity following | Maps the DSP bass envelope to motor amplitude, following the stronger L/R envelope. Detection cutoff 60–200Hz, strength 1–100%. Does not reproduce source pitch |
 | Waveform mode, experimental | Copies DSP PCM into a separate haptic output session. Retains source frequencies without octave shifting; averages L/R for one motor |
 | Motor-only EQ | Waveform mode: six bands at 40/80/160/320/640/1280Hz, ±12dB in 0.5dB steps. Does not change speaker EQ. Reset to flat available |
-| Extra boost | Initially OFF; enabling reveals an extra-strength slider. Adds 0–200% to the existing strength (up to 3×), in waveform and intensity modes. Included in full presets/backups; hardware limits still apply |
+| Extra boost | Initially OFF; enabling reveals an extra-strength slider. Adds 0–300% to the existing strength (up to 4×), in waveform and intensity modes. Included in full presets/backups; hardware limits still apply |
 | Strength and protection | Waveform mode removes DC, suppresses aliasing and caps digital drive. Strength, OS media/haptic settings and mechanical response affect actual vibration |
 
 The envelope cutoff is unavailable in waveform mode; waveform EQ is unavailable in intensity mode. Master OFF, feature OFF, external output and stale/missing data stop motor output. Unsupported output is reported and stopped without silently switching modes. After required updates, toggle the feature OFF then ON to retry.
@@ -306,7 +309,7 @@ Speaker audio retains its full-band route; the additional stream's audio L/R is 
 | Full settings preset | Built-in and all saved external outputs' audio/operation settings, including master ON/OFF, Legacy, rotation, startup, USB follow and motor mode/strength/EQ |
 | External device preset | Selected device's audio settings, processing ON/OFF and Legacy. Lists target name and short identifier. Disconnected devices can be selected; Apply affects only that device |
 
-Named presets support save, load/apply and deletion; saving the same name overwrites it. **Use Full settings presets when you want every setting restored.** They do not change the physical connection, preset libraries, Android permissions or installed modules.
+Named presets support save, load/apply and deletion; saving under an existing name asks before overwriting. Deleting, restoring full settings and resetting to flat also ask for confirmation. **Use Full settings presets when you want every setting restored.** They do not change the physical connection, preset libraries, Android permissions or installed modules.
 
 Normal backups support JSON files/clipboard, old `eq.xml`, saved preset libraries and IRS transfer. Import alone does not enable processing or apply a full preset. External presets support individual/all JSON file import/export with device associations and available IRS. Import alone does not apply audio settings. Motor settings are in full presets/normal backups, but excluded from external-only presets.
 
@@ -320,6 +323,7 @@ New devices start with processing OFF and flat settings. External output allows 
 
 - Twelve menus: EQ, Common EQ, Bass, Common bass, FX, Common FX, HiFi, Vibration, Quality, Presets, Settings and Status.
 - Material-style cards/tabs, system-bar appearance adjustments, light/dark modes, large text and landscape support. The app icon has a black outline.
+- −/+ step buttons on EQ, bass, common-bass and vibration sliders. The last opened menu is restored on the next launch (stored separately from audio settings and backups).
 - Japanese device language selects Japanese; all Chinese locales select Simplified Chinese; every other language selects English. User device/preset names remain unchanged.
 - Quick Settings tile toggles master processing. Automatic startup after reboot/app update follows saved processing and startup settings. Notification and battery optimization controls are available.
 - One-sided 1kHz regular/EQ-attached test tones help check speaker mapping and processing. Enabled global processing also affects the regular test tone.
@@ -327,6 +331,8 @@ New devices start with processing OFF and flat settings. External output allows 
 - Manual session attachment, rescanning, `dumpsys` session-line collection, log display and full-log copying are available.
 
 ### 12. Levels, latency, verification and distribution
+
+v0.35 adds an EQ response graph, −/+ fine adjustment, confirmation dialogs and up to 300% motor boost. Slider changes are now applied to the DSP in the background and coalesced to avoid stutter; the master switch now follows Quick Settings tile changes; a failed test tone no longer closes the app; invalid values in old backups are sanitized. The settings format is unchanged and updating from v0.34 keeps all settings (verified on device by comparing settings files before and after). 23 regression suites pass on device. The AIDL module remains v0.30; reinstalling it is unnecessary. Reboot after updating.
 
 v0.34 fixes individual EQ being blocked when root-assisted session scanning is OFF. The scanning preference controls dumpsys fallback only; EQ and AIDL processing remain independent. Left/right preamp, bands and application switches stay separate; readback-gated compatibility also handles ignored channel bypass on AIDL. v0.33 explicitly selects the Android EQ implementation through root assistance when multiple implementations claim its effect type. It verifies settings before activation; unambiguous devices retain the public Android API. Previous v0.32 fixes PID readiness parsing, paired control-file generations, activation after all configuration/readback, and resets after rapid master toggles. Legacy mode performs a bounded burst of asynchronous checks after playback/output/engine events, repairing this app’s EQ if it follows bass processing. No perpetual polling. Speaker DSP algorithms and module remain identical to v0.30. Listening on the updated device remains necessary.
 
@@ -345,7 +351,7 @@ This repository distributes documentation and compiled releases. **Application s
 <a id="zh"></a>
 ## 简体中文
 
-Earpiece EQ 可分别调整 Android 设备的听筒侧与底部扬声器。使用外部输出时，可分别调整左、右声道。共用 EQ、低音、音效与 HiFi 级可以与独立处理叠加。本说明适用于 **v0.34-stability**。
+Earpiece EQ 可分别调整 Android 设备的听筒侧与底部扬声器。使用外部输出时，可分别调整左、右声道。共用 EQ、低音、音效与 HiFi 级可以与独立处理叠加。本说明适用于 **v0.35-material**。
 
 ### 1. 安装与使用条件
 
@@ -383,7 +389,7 @@ adb shell pm grant rakkashin.earpieceeq android.permission.DUMP
 
 ### 3. 独立 EQ 与共用 EQ
 
-支持 1–32 个频段，每段 **−50 至 +50 dB**，前级增益 **−12 至 +12 dB**。控制点约覆盖 31Hz–20kHz，在对数频率轴上平滑插值。每种频段数量分别记忆增益，切回时恢复对应设置。支持重置为平直。仅使用一个频段时调整整体增益。
+支持 1–32 个频段，每段 **−50 至 +50 dB**，前级增益 **−12 至 +12 dB**。控制点约覆盖 31Hz–20kHz，在对数频率轴上平滑插值。每种频段数量分别记忆增益，切回时恢复对应设置。支持重置为平直。仅使用一个频段时调整整体增益。显示包含前级增益的频率响应曲线（与 DSP 使用相同插值），每个滑块带有 −/+ 按钮，可按 0.5 dB 微调。
 
 独立 EQ 应用于所选输出侧；共用 EQ 使用独立开关与设置作用于两侧，并提供专用共用 EQ 预设。
 
@@ -458,7 +464,7 @@ IRS 支持单/双声道 PCM16/24/32、float32 RIFF/WAVE，以及按 48kHz 单声
 | 强弱跟随 | 将 DSP 低音包络转换为马达振幅，跟随左右较强的一侧。检测截止频率 60–200Hz，强度 1–100%；不重现原始音高 |
 | 音频波形模式（试验） | 将 DSP PCM 复制到独立触觉输出会话。保留原始频率，不做八度变换；左右取平均后发送至单个马达 |
 | 马达专用 EQ | 波形模式下提供 40/80/160/320/640/1280Hz 六段 EQ，每段 ±12dB、步进 0.5dB；不影响扬声器 EQ，可重置为平直 |
-| 额外增强 | 默认关闭；开启后显示额外强度滑块。在原强度上增加 0–200%（最高 3 倍），适用于波形与强弱模式。包含在全设置预设和备份中；仍受硬件上限限制 |
+| 额外增强 | 默认关闭；开启后显示额外强度滑块。在原强度上增加 0–300%（最高 4 倍），适用于波形与强弱模式。包含在全设置预设和备份中；仍受硬件上限限制 |
 | 强度与保护 | 波形模式去除 DC、抑制混叠并限制数字驱动量。强度、系统媒体/振动设置与设备机械特性共同决定实际振动 |
 
 波形模式中不能编辑原有包络检测截止频率；强弱模式中不能编辑波形 EQ。整体关闭、功能关闭、外部输出或数据过期/中断时停止马达。不支持时显示状态并停止，不会擅自切换至另一方式。完成必要更新后，可关闭再开启功能以重试。
@@ -475,7 +481,7 @@ IRS 支持单/双声道 PCM16/24/32、float32 RIFF/WAVE，以及按 48kHz 单声
 | 全设置预设 | 机身和所有已保存外部设备的音频/运行设置，包括整体开关、传统模式、方向、自动启动、USB 跟随、马达模式/强度/EQ |
 | 外部设备预设 | 指定设备的音频设置、处理开关和传统模式；列表显示目标名称与短识别码，可选择未连接设备，应用时只影响目标设备 |
 
-命名预设支持保存、加载/应用和删除，同名保存会覆盖。**若要恢复全部设置，请使用“全设置预设”。** 它不会更改实际连接、预设列表、Android 权限或已安装模块。
+命名预设支持保存、加载/应用和删除，同名保存时会先确认再覆盖；删除、恢复全设置和重置为平直前也会确认。**若要恢复全部设置，请使用“全设置预设”。** 它不会更改实际连接、预设列表、Android 权限或已安装模块。
 
 普通备份支持 JSON 文件/剪贴板、旧 `eq.xml`、已保存预设及 IRS 数据迁移。仅导入不会开启处理，也不会自动应用全设置预设。外部预设支持单个/全部 JSON 文件导入导出，保留设备关联和可用 IRS。仅导入外部预设不会应用音频设置。马达设置包含于全设置预设和普通备份，排除在外部专用预设之外。
 
@@ -489,6 +495,7 @@ IRS 支持单/双声道 PCM16/24/32、float32 RIFF/WAVE，以及按 48kHz 单声
 
 - 共 12 个菜单：EQ、共用 EQ、低音、共用低音、音效、共用音效、HiFi、振动、质量、预设、设置、状态。
 - Material 风格卡片/标签、系统栏显示调整、浅色/深色、大字体和横屏支持；应用图标带黑色边框。
+- EQ、低音、共用低音和振动滑块带有 −/+ 按钮。下次启动时显示上次打开的菜单（与音频设置和备份分开保存）。
 - 日语设备显示日语；所有中文区域显示简体中文；其余语言显示英语。用户设备名和预设名不翻译。
 - 快捷设置磁贴切换整体处理。重启/应用更新后的自动启动遵循已保存处理状态及自动启动设置；可检查通知和电池优化。
 - 提供单侧 1kHz 普通测试音与附加 EQ 的测试音，帮助确认扬声器映射及处理。已启用的全局处理也会影响普通测试音。
@@ -496,6 +503,8 @@ IRS 支持单/双声道 PCM16/24/32、float32 RIFF/WAVE，以及按 48kHz 单声
 - 支持手动会话应用、重新扫描、获取 `dumpsys` 会话行、显示诊断日志和复制完整日志。
 
 ### 12. 电平、延迟、验证与分发
+
+v0.35 新增 EQ 频响曲线、−/+ 微调、确认对话框，并将马达额外增强上限提高到 300%。滑块调整改为在后台合并后应用到 DSP，减少卡顿；修复快速设置磁贴切换后开关显示不同步、测试音播放失败导致退出，以及旧备份中无效数值的处理。设置格式不变，从 v0.34 覆盖更新会完整保留设置（已在设备上比对更新前后的设置文件）。设备上 23 套回归测试通过。AIDL 模块仍为 v0.30，无需重新安装。更新后请重启设备。
 
 v0.34 修复关闭会话扫描 root 辅助时独立 EQ 无法启动的问题。该设置仅控制 dumpsys 回退方式，与 EQ 和 AIDL 处理的启动无关。左右声道的前置增益、频段与应用开关独立生效，并增加读回验证后的兼容处理，解决 AIDL 忽略单侧关闭状态的问题。v0.33 在同一 EQ 类型注册了多个实现的设备上，通过 root 辅助明确选择 Android EQ 实现，并在读回验证后启用。没有冲突的设备继续使用公开 Android API。之前的 v0.32 修复 PID 就绪解析、控制文件配对、完成全部设置及读回后再启用，以及快速切换整体开关后的重新初始化。传统模式在播放/输出/引擎事件后进行有限次数的异步检查；若本应用 EQ 位于低音处理之后，则重新排列本应用 EQ。不会持续轮询。扬声器 DSP 算法及模块与 v0.30 相同，更新后仍需实机听音确认。
 
