@@ -7,11 +7,11 @@
 <a id="ja"></a>
 ## 日本語
 
-Androidのイヤーピース側・下スピーカー側を別々に調整するオーディオアプリです。外部出力では左・右チャンネルを調整します。個別設定に加え、両側へ適用する共通EQ・共通低音・共通FX・共通HiFiを重ねて使えます。この説明は **v0.38-haptic** を対象にしています。
+Androidのイヤーピース側・下スピーカー側を別々に調整するオーディオアプリです。外部出力では左・右チャンネルを調整します。個別設定に加え、両側へ適用する共通EQ・共通低音・共通FX・共通HiFiを重ねて使えます。この説明は **v0.39-haptic** を対象にしています。
 
-### v0.38 の変更
+### v0.39 の変更
 
-振動の追加ブースト上限を800%（最大9倍）へ拡張。既存値・ON/OFF・保存復元を維持し、モーター用PCMを飽和処理して整数オーバーフローを防止します。スピーカーDSPとモジュールは変更なし（v0.31.1）。ハードウェア上限は超えません。
+振動の追加ブースト上限を2000%（最大21倍）へ拡張。既存値・ON/OFF・保存復元を維持し、モーター用PCMを飽和処理して整数オーバーフローを防止します。スピーカーDSPとモジュールは変更なし（v0.31.1）。ハードウェア上限は超えません。
 
 ### v0.37 の追加機能
 
@@ -133,7 +133,7 @@ IRSはモノラル/ステレオのPCM16/24/32・float32 RIFF/WAVE、または48k
 | 強弱連動 | DSPの低音包絡をモーターの強さへ変換。左右の強い方へ追従。検出上限60〜200Hz、強さ1〜100%。元の音程を再生する方式ではありません |
 | 音声波形モード（試験機能） | DSPのPCMコピーを別セッションの振動用出力へ送る。オクターブ変換せず元の周波数を保持。左右を平均して1つのモーターへ送る |
 | モーター専用EQ | 波形モードで40/80/160/320/640/1280Hzの6バンド、各±12dB・0.5dB刻み。スピーカーEQには影響しない。フラットへリセット可能 |
-| 追加ブースト | 初期OFF。ONで追加強度スライダーを表示。元の強さに0〜800%を加算（最大9倍）。波形・強弱連動の両方式に適用。全設定プリセットとバックアップへ保存。端末側の上限を超えることはできない |
+| 追加ブースト | 初期OFF。ONで追加強度スライダーを表示。元の強さに0〜2000%を加算（最大21倍）。波形・強弱連動の両方式に適用。全設定プリセットとバックアップへ保存。端末側の上限を超えることはできない |
 | 強さと保護 | 波形モードはDC除去・折返し抑制・デジタル駆動量制限を行う。強さとOS側のメディア/振動設定、端末の機械特性が実際の振動に影響 |
 
 波形モード中は従来の検出上限を編集できず、強弱連動モード中は波形用EQを編集できません。全体OFF・機能OFF・外部出力・古い/停止したデータでは停止します。非対応なら状態に表示して停止し、別方式へ黙って切り替えません。必要な更新後は機能をOFF→ONにして再試行できます。
@@ -195,11 +195,11 @@ v0.31の追加ブーストは独立したPCM/制御試験と画面操作で検�
 <a id="en"></a>
 ## English
 
-Earpiece EQ adjusts the earpiece and bottom speaker independently. With external outputs, it adjusts left and right channels. Common EQ, bass, FX and HiFi stages can be stacked with individual processing. This manual describes **v0.38-haptic**.
+Earpiece EQ adjusts the earpiece and bottom speaker independently. With external outputs, it adjusts left and right channels. Common EQ, bass, FX and HiFi stages can be stacked with individual processing. This manual describes **v0.39-haptic**.
 
-### New in v0.38
+### New in v0.39
 
-Extra vibration boost now reaches 800% (up to 9×). Existing values, switches and presets are retained. Motor PCM saturates safely instead of wrapping. Speaker DSP and module remain unchanged (v0.31.1). Hardware output limits still apply.
+Extra vibration boost now reaches 2000% (up to 21×). Existing values, switches and presets are retained. Motor PCM saturates safely instead of wrapping. Speaker DSP and module remain unchanged (v0.31.1). Hardware output limits still apply.
 
 ### New in v0.37
 
@@ -321,7 +321,7 @@ Built-in output only. Enable master processing and motor output. Initially OFF, 
 | Intensity following | Maps the DSP bass envelope to motor amplitude, following the stronger L/R envelope. Detection cutoff 60–200Hz, strength 1–100%. Does not reproduce source pitch |
 | Waveform mode, experimental | Copies DSP PCM into a separate haptic output session. Retains source frequencies without octave shifting; averages L/R for one motor |
 | Motor-only EQ | Waveform mode: six bands at 40/80/160/320/640/1280Hz, ±12dB in 0.5dB steps. Does not change speaker EQ. Reset to flat available |
-| Extra boost | Initially OFF; enabling reveals an extra-strength slider. Adds 0–800% to the existing strength (up to 9×), in waveform and intensity modes. Included in full presets/backups; hardware limits still apply |
+| Extra boost | Initially OFF; enabling reveals an extra-strength slider. Adds 0–2000% to the existing strength (up to 21×), in waveform and intensity modes. Included in full presets/backups; hardware limits still apply |
 | Strength and protection | Waveform mode removes DC, suppresses aliasing and caps digital drive. Strength, OS media/haptic settings and mechanical response affect actual vibration |
 
 The envelope cutoff is unavailable in waveform mode; waveform EQ is unavailable in intensity mode. Master OFF, feature OFF, external output and stale/missing data stop motor output. Unsupported output is reported and stopped without silently switching modes. After required updates, toggle the feature OFF then ON to retry.
@@ -383,11 +383,11 @@ This repository distributes documentation and compiled releases. **Application s
 <a id="zh"></a>
 ## 简体中文
 
-Earpiece EQ 可分别调整 Android 设备的听筒侧与底部扬声器。使用外部输出时，可分别调整左、右声道。共用 EQ、低音、音效与 HiFi 级可以与独立处理叠加。本说明适用于 **v0.38-haptic**。
+Earpiece EQ 可分别调整 Android 设备的听筒侧与底部扬声器。使用外部输出时，可分别调整左、右声道。共用 EQ、低音、音效与 HiFi 级可以与独立处理叠加。本说明适用于 **v0.39-haptic**。
 
-### v0.38 更新
+### v0.39 更新
 
-振动额外增强上限提高至 800%（最高 9 倍），保留已有数值、开关及预设。马达 PCM 使用饱和处理防止整数回绕。扬声器 DSP 和模块不变（v0.31.1），仍受硬件输出上限限制。
+振动额外增强上限提高至 2000%（最高 21 倍），保留已有数值、开关及预设。马达 PCM 使用饱和处理防止整数回绕。扬声器 DSP 和模块不变（v0.31.1），仍受硬件输出上限限制。
 
 ### v0.37 新增功能
 
@@ -509,7 +509,7 @@ IRS 支持单/双声道 PCM16/24/32、float32 RIFF/WAVE，以及按 48kHz 单声
 | 强弱跟随 | 将 DSP 低音包络转换为马达振幅，跟随左右较强的一侧。检测截止频率 60–200Hz，强度 1–100%；不重现原始音高 |
 | 音频波形模式（试验） | 将 DSP PCM 复制到独立触觉输出会话。保留原始频率，不做八度变换；左右取平均后发送至单个马达 |
 | 马达专用 EQ | 波形模式下提供 40/80/160/320/640/1280Hz 六段 EQ，每段 ±12dB、步进 0.5dB；不影响扬声器 EQ，可重置为平直 |
-| 额外增强 | 默认关闭；开启后显示额外强度滑块。在原强度上增加 0–800%（最高 9 倍），适用于波形与强弱模式。包含在全设置预设和备份中；仍受硬件上限限制 |
+| 额外增强 | 默认关闭；开启后显示额外强度滑块。在原强度上增加 0–2000%（最高 21 倍），适用于波形与强弱模式。包含在全设置预设和备份中；仍受硬件上限限制 |
 | 强度与保护 | 波形模式去除 DC、抑制混叠并限制数字驱动量。强度、系统媒体/振动设置与设备机械特性共同决定实际振动 |
 
 波形模式中不能编辑原有包络检测截止频率；强弱模式中不能编辑波形 EQ。整体关闭、功能关闭、外部输出或数据过期/中断时停止马达。不支持时显示状态并停止，不会擅自切换至另一方式。完成必要更新后，可关闭再开启功能以重试。
