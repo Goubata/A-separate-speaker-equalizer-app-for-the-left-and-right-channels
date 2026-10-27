@@ -7,7 +7,16 @@
 <a id="ja"></a>
 ## 日本語
 
-Androidのイヤーピース側・下スピーカー側を別々に調整するオーディオアプリです。外部出力では左・右チャンネルを調整します。個別設定に加え、両側へ適用する共通EQ・共通低音・共通FX・共通HiFiを重ねて使えます。この説明は **v0.36-material** を対象にしています。
+Androidのイヤーピース側・下スピーカー側を別々に調整するオーディオアプリです。外部出力では左・右チャンネルを調整します。個別設定に加え、両側へ適用する共通EQ・共通低音・共通FX・共通HiFiを重ねて使えます。この説明は **v0.37-quick** を対象にしています。
+
+### v0.37 の追加機能
+
+- **クイックFX**：独立メニューに100Hz HPF、倍音によるバーチャルベース、ダウンワード・エクスパンダー、ディエッサーを追加。4つを別々にON/OFFでき、既存の個別・共通処理と併用できます。クイックFX自体は左右共通です。
+- エクスパンダーは直前の音より約30dB小さい成分を基準に最大18dB抑制します。ディエッサーは4.5kHz以上の突出を最大8dB抑制します。音量を下げた音源を固定しきい値で常時抑えてしまわない相対検出です。
+- **EQグラフ**：1〜8倍ズーム、ピンチ、横移動、選択バンドの前後移動と数値微調整。グラフ上の変更も通常のEQ設定として保存されます。
+- クイックFXは出力デバイスごとに保存され、まとめてプリセット・全設定プリセット・外部デバイス用プリセット・JSONバックアップに含まれます。旧設定に項目がなければOFFです。
+- 全体OFFでは本アプリのEQ・専用DSP・振動を停止します。再開時は古い追加FXの状態を持ち越さず、設定を反映・確認してから有効化します。レガシー時の個別EQ→専用DSPの順序確認を継続しています。クイックFXは専用DSP内で共通EQ・低音・追加FXより前に処理されます。
+- 検証：Android回帰25スイート、ネイティブ15スイート、実機上の独立AIDL/FMQ併用・停止再開試験、475設定の全出力保存復元、6画面条件で計36回の全設定復元。聴感、モーターの物理同期、実USB DACの挙動まで保証する結果ではありません。
 
 ### 1. 導入・必要条件
 
@@ -21,7 +30,7 @@ Androidのイヤーピース側・下スピーカー側を別々に調整する�
 | 外部出力の自動識別 | Android 13以降のメディア出力先情報 |
 | USBレート追従 | root、Android 14以降、対応USB出力、同じ出力上で有効な専用DSP |
 
-**同梱モジュールはAndroid 16・arm64・AIDL effect HAL v3向けです。** SoC名だけでは対応を判定できず、すべての端末で動く汎用モジュールではありません。現在の機能一式には同梱v0.30を使用してください。
+**同梱モジュールはAndroid 16・arm64・AIDL effect HAL v3向けです。** SoC名だけでは対応を判定できず、すべての端末で動く汎用モジュールではありません。現在の機能一式には同梱v0.31.1を使用してください。クイックFXにはAPKとモジュールの両方の更新・再起動が必要です。
 
 1. ReleasesのAPKをインストールします。同じアプリID・署名での上書き更新は既存設定を引き継ぎます。
 2. アプリを開き、通知を許可します。再起動後の自動開始を使う場合はバッテリー最適化の除外も設定します。
@@ -182,7 +191,16 @@ v0.31の追加ブーストは独立したPCM/制御試験と画面操作で検�
 <a id="en"></a>
 ## English
 
-Earpiece EQ adjusts the earpiece and bottom speaker independently. With external outputs, it adjusts left and right channels. Common EQ, bass, FX and HiFi stages can be stacked with individual processing. This manual describes **v0.36-material**.
+Earpiece EQ adjusts the earpiece and bottom speaker independently. With external outputs, it adjusts left and right channels. Common EQ, bass, FX and HiFi stages can be stacked with individual processing. This manual describes **v0.37-quick**.
+
+### New in v0.37
+
+- **Quick FX** adds a separate menu with a 100 Hz HPF, harmonic virtual bass, downward expander and de-esser. Each pedal switches independently and stacks with existing individual/common processing. Quick FX itself is shared by both channels.
+- The expander uses a threshold about 30 dB below recent audio, with up to 18 dB reduction. The de-esser reduces dominant content above 4.5 kHz by up to 8 dB. Relative detection avoids permanently gating quiet playback with a fixed absolute threshold.
+- **EQ graph**: 1–8× zoom, pinch, horizontal pan, previous/next band selection and fine adjustment. Graph edits are saved as regular EQ settings.
+- Quick FX is stored per output device and included in combined, full-settings and external-device presets, plus JSON backups. Missing keys in old settings default to OFF.
+- Master OFF stops this app’s EQ, companion DSP and vibration. Restart configures and verifies settings before activation without carrying stale optional FX flags. Legacy mode retains the individual-EQ-before-companion-DSP order check. Quick FX runs inside the companion DSP before common EQ, bass and other FX.
+- Verification: 25 Android regression suites, 15 native suites, isolated on-device AIDL/FMQ stacking and STOP/START tests, 475 typed settings restored across all outputs, and 36 full restores across six UI conditions. These do not establish listening quality, physical motor synchronization or real USB DAC behavior.
 
 ### 1. Installation and requirements
 
@@ -196,7 +214,7 @@ Earpiece EQ adjusts the earpiece and bottom speaker independently. With external
 | Automatic external device identification | Android 13+ media routing information |
 | USB rate follow | Root, Android 14+, compatible USB output and active companion DSP on that output |
 
-**The bundled module targets Android 16, arm64 and AIDL effect HAL v3.** SoC branding alone cannot determine compatibility; this is not a universal module. Use bundled v0.30 for the current feature set.
+**The bundled module targets Android 16, arm64 and AIDL effect HAL v3.** SoC branding alone cannot determine compatibility; this is not a universal module. Use bundled v0.31.1 for the current feature set. Quick FX requires both APK and module updates followed by a reboot.
 
 1. Install the APK from Releases. Updating with the same app ID and signature preserves existing settings.
 2. Open the app and allow notifications. For automatic startup, also review battery optimization exemptions.
@@ -357,7 +375,16 @@ This repository distributes documentation and compiled releases. **Application s
 <a id="zh"></a>
 ## 简体中文
 
-Earpiece EQ 可分别调整 Android 设备的听筒侧与底部扬声器。使用外部输出时，可分别调整左、右声道。共用 EQ、低音、音效与 HiFi 级可以与独立处理叠加。本说明适用于 **v0.36-material**。
+Earpiece EQ 可分别调整 Android 设备的听筒侧与底部扬声器。使用外部输出时，可分别调整左、右声道。共用 EQ、低音、音效与 HiFi 级可以与独立处理叠加。本说明适用于 **v0.37-quick**。
+
+### v0.37 新增功能
+
+- **快捷音效**：独立菜单提供 100 Hz 高通、谐波虚拟低音、向下扩展器和齿音消除器。四项可分别开关，与现有独立/共用处理叠加；快捷音效本身为左右共用。
+- 扩展器以近期音量以下约 30 dB 为基准，最多衰减 18 dB；齿音消除器对 4.5 kHz 以上的突出成分最多衰减 8 dB。相对检测避免固定绝对阈值持续压低小音量播放。
+- **EQ 曲线**：1–8 倍缩放、双指缩放、横向平移、前后频段选择及数值微调。曲线编辑作为普通 EQ 设置保存。
+- 快捷音效按输出设备保存，并纳入组合预设、全部设置预设、外部设备预设及 JSON 备份；旧设置缺少项目时默认为关闭。
+- 整体关闭会停止本应用 EQ、专用 DSP 和振动。重新开启时先配置并验证，再启用，不残留上一代可选音效状态。传统模式保留独立 EQ 在专用 DSP 前的顺序检查；快捷音效位于专用 DSP 内的共用 EQ、低音及其他音效之前。
+- 验证：25 套 Android 回归、15 套原生测试、设备上的独立 AIDL/FMQ 叠加与停止/启动测试、跨全部输出恢复 475 项带类型设置，以及六种界面条件下共 36 次全部设置恢复。这不等于保证听感、马达物理同步或真实 USB DAC 行为。
 
 ### 1. 安装与使用条件
 
@@ -371,7 +398,7 @@ Earpiece EQ 可分别调整 Android 设备的听筒侧与底部扬声器。使�
 | 外部设备自动识别 | Android 13 以上媒体路由信息 |
 | USB 采样率跟随 | root、Android 14 以上、兼容 USB 输出，以及同一输出上的有效专用 DSP |
 
-**附带模块面向 Android 16、arm64 和 AIDL effect HAL v3。** 不能仅按 SoC 品牌判断兼容性，也不是适用于所有设备的通用模块。当前完整功能请使用附带的 v0.30 模块。
+**附带模块面向 Android 16、arm64 和 AIDL effect HAL v3。** 不能仅按 SoC 品牌判断兼容性，也不是适用于所有设备的通用模块。当前完整功能请使用附带的 v0.31.1 模块。快捷音效需要更新 APK 和模块，然后重启设备。
 
 1. 从 Releases 安装 APK。使用相同应用 ID 和签名覆盖更新，可保留已有设置。
 2. 打开应用并允许通知。若使用自动启动，也请检查电池优化豁免。
