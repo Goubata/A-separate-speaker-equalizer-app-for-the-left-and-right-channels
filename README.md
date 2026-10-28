@@ -21,6 +21,10 @@
 <a id="ja"></a>
 ## 日本語
 
+### モジュール0.32.1の互換性修正
+
+AIDL/HIDL両版で、読み取り専用vendorを指すリンクへのラベル変更を防止。ラベル設定失敗は警告として続行し、致命的な起動失敗はログに理由を記録します。APK v0.44はそのまま使用できます。適合するモジュール片方だけを更新して再起動してください。DSPは0.32と同一です。`skip_mount` / `skip_mountify` は独自のbind mountを使うため意図的です。通常のKernelSU/メタモジュールのマウント一覧だけで判断せず、`bass-module.log`のCompleted/Mergedと実際のマウント・HALロードを確認してください。
+
 Androidのイヤーピース側・下スピーカー側を別々に調整するオーディオアプリです。外部出力では左・右チャンネルを調整します。個別設定に加え、両側へ適用する共通EQ・共通低音・共通FX・共通HiFiを重ねて使えます。この説明は **v0.44-bass-fix** を対象にしています。
 
 ### v0.44 の低音上限修正
@@ -238,6 +242,10 @@ v0.31の追加ブーストは独立したPCM/制御試験と画面操作で検�
 <a id="en"></a>
 ## English
 
+### Module 0.32.1 compatibility fix
+
+Both HAL variants avoid relabeling read-only vendor symlink targets. Context failures warn and continue; fatal startup failures log a reason. Keep APK v0.44, update only your matching module and reboot. DSP binaries match v0.32. `skip_mount` / `skip_mountify` are intentional: startup performs manual bind mounts. Check Completed/Merged in `bass-module.log`, actual mounts and HAL loading rather than normal KernelSU/metamodule mount listings alone.
+
 Earpiece EQ adjusts the earpiece and bottom speaker independently. With external outputs, it adjusts left and right channels. Common EQ, bass, FX and HiFi stages can be stacked with individual processing. This manual describes **v0.44-bass-fix**.
 
 ### Bass ceiling fixes in v0.44
@@ -453,6 +461,10 @@ This repository distributes documentation and compiled releases. **Application s
 
 <a id="zh"></a>
 ## 简体中文
+
+### 模块0.32.1兼容性修复
+
+AIDL/HIDL 均避免修改指向只读 vendor 的符号链接目标标签。标签设置失败时警告并继续，致命启动失败记录原因。继续使用 APK v0.44，仅更新适合设备的一个模块并重启。DSP 与0.32相同。`skip_mount` / `skip_mountify` 是有意设置的，启动脚本自行 bind mount。请检查 `bass-module.log` 的 Completed/Merged、实际挂载及 HAL 加载，不能仅凭 KernelSU/元模块常规挂载列表判断。
 
 Earpiece EQ 可分别调整 Android 设备的听筒侧与底部扬声器。使用外部输出时，可分别调整左、右声道。共用 EQ、低音、音效与 HiFi 级可以与独立处理叠加。本说明适用于 **v0.44-bass-fix**。
 
