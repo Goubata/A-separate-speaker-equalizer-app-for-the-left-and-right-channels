@@ -1,8 +1,22 @@
-# Earpiece EQ
+<p align="center">
+  <img src="assets/app-icon.png" alt="Earpiece EQ app icon" width="128" height="128">
+</p>
 
-[日本語](#ja) · [English](#en) · [简体中文](#zh)
+<h1 align="center">Earpiece EQ</h1>
 
-[Download / ダウンロード / 下载](https://github.com/Goubata/A-separate-speaker-equalizer-app-for-the-left-and-right-channels/releases/latest)
+<p align="center">
+  左右別・共通のオーディオ調整<br>
+  Independent &amp; shared audio processing<br>
+  独立声道与共用音频调节
+</p>
+
+<p align="center">
+  <a href="https://github.com/Goubata/A-separate-speaker-equalizer-app-for-the-left-and-right-channels/releases/latest"><strong>Download APK · ダウンロード · 下载</strong></a>
+</p>
+
+<p align="center">
+  <a href="#ja">日本語</a> · <a href="#en">English</a> · <a href="#zh">简体中文</a>
+</p>
 
 <a id="ja"></a>
 ## 日本語
