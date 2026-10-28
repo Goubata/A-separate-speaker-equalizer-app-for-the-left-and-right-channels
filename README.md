@@ -7,7 +7,11 @@
 <a id="ja"></a>
 ## 日本語
 
-Androidのイヤーピース側・下スピーカー側を別々に調整するオーディオアプリです。外部出力では左・右チャンネルを調整します。個別設定に加え、両側へ適用する共通EQ・共通低音・共通FX・共通HiFiを重ねて使えます。この説明は **v0.41-dual** を対象にしています。
+Androidのイヤーピース側・下スピーカー側を別々に調整するオーディオアプリです。外部出力では左・右チャンネルを調整します。個別設定に加え、両側へ適用する共通EQ・共通低音・共通FX・共通HiFiを重ねて使えます。この説明は **v0.42-module-info** を対象にしています。
+
+### v0.42 の修正
+
+HIDL版でモジュールの版数が「導入情報未取得」になる問題を修正しました。AIDL/HIDL両方の導入先に対応し、片方が未導入でも読み取れます。音声処理・常駐・設定保存・両モジュールに変更はありません。
 
 ### v0.41 の変更
 
@@ -207,7 +211,11 @@ v0.31の追加ブーストは独立したPCM/制御試験と画面操作で検�
 <a id="en"></a>
 ## English
 
-Earpiece EQ adjusts the earpiece and bottom speaker independently. With external outputs, it adjusts left and right channels. Common EQ, bass, FX and HiFi stages can be stacked with individual processing. This manual describes **v0.41-dual**.
+Earpiece EQ adjusts the earpiece and bottom speaker independently. With external outputs, it adjusts left and right channels. Common EQ, bass, FX and HiFi stages can be stacked with individual processing. This manual describes **v0.42-module-info**.
+
+### Fixed in v0.42
+
+Fixes “Installed version unavailable” with the HIDL module. Metadata lookup now supports both module paths, including HIDL-only installations. Audio processing, keep-alive, saved settings and both module ZIPs are unchanged.
 
 ### New in v0.41
 
@@ -407,7 +415,11 @@ This repository distributes documentation and compiled releases. **Application s
 <a id="zh"></a>
 ## 简体中文
 
-Earpiece EQ 可分别调整 Android 设备的听筒侧与底部扬声器。使用外部输出时，可分别调整左、右声道。共用 EQ、低音、音效与 HiFi 级可以与独立处理叠加。本说明适用于 **v0.41-dual**。
+Earpiece EQ 可分别调整 Android 设备的听筒侧与底部扬声器。使用外部输出时，可分别调整左、右声道。共用 EQ、低音、音效与 HiFi 级可以与独立处理叠加。本说明适用于 **v0.42-module-info**。
+
+### v0.42 修复
+
+修复 HIDL 模块显示“无法获取已安装版本”的问题。现支持 AIDL/HIDL 两种安装路径，仅安装 HIDL 也可读取。音频处理、后台常驻、设置保存及两个模块 ZIP 均未更改。
 
 ### v0.41 更新
 
