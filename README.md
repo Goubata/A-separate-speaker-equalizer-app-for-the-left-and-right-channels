@@ -21,7 +21,16 @@
 <a id="ja"></a>
 ## 日本語
 
-Androidのイヤーピース側・下スピーカー側を別々に調整するオーディオアプリです。外部出力では左・右チャンネルを調整します。個別設定に加え、両側へ適用する共通EQ・共通低音・共通FX・共通HiFiを重ねて使えます。この説明は **v0.43-module-text** を対象にしています。
+Androidのイヤーピース側・下スピーカー側を別々に調整するオーディオアプリです。外部出力では左・右チャンネルを調整します。個別設定に加え、両側へ適用する共通EQ・共通低音・共通FX・共通HiFiを重ねて使えます。この説明は **v0.44-bass-fix** を対象にしています。
+
+### v0.44 の低音上限修正
+
+- **上限が効きにくい不具合**：従来は制限されない経路にも低音が残り、設定上限を超える条件がありました。位相を保った相補的な帯域分離へ変更し、実際の低音出力も測る試験を追加しました。
+- **片側ONで音が変わる不具合**：制限不要な小音量でも片側の位相が変わる問題を修正。非制限側は同じ固定遅延だけで通し、左右を揃えます。個別と共通を重ねた時は、各側で厳しい方の上限を一度だけ使います。
+- 修正には**モジュールv0.32とAPKの更新・端末再起動**が必要です。AIDL版・HIDL版に同じコアの修正を入れています。端末に合う方だけを導入してください。設定値・プリセットは引き継ぎます。
+- 位相を保つ分離と先読みで、低音経路の固定遅延は48kHz時約18ms（848サンプル）です。左右共通で、個別・共通を重ねても二重にはなりません。上限OFFの側にも同じ遅延を適用します。振動のみで音声処理なしの経路は従来の同一サンプル素通しを維持します。
+- メーターの「出力ピーク」は全帯域です。高域を含む曲では低音上限より大きく表示されることがあり、低域だけの上限違反を意味しません。250Hzを超える範囲は帯域分離の遷移域があります。
+- 確認：JVM27、端末回帰26、native17スイート、独立AIDL/FMQ29項目、HIDL C-ABI7項目、UBSan、制御順序/ロック競合、6条件36回の全設定復元。再起動後の普段の再生、HIDL実機登録、物理音圧・振動同期・実USB DACはこの試験の保証対象ではありません。
 
 ### v0.43 の表記修正
 
@@ -68,7 +77,7 @@ HIDL版でモジュールの版数が「導入情報未取得」になる問題�
 | 外部出力の自動識別 | Android 13以降のメディア出力先情報 |
 | USBレート追従 | root、Android 14以降、対応USB出力、同じ出力上で有効な専用DSP |
 
-**同梱モジュールはAndroid 16・arm64・AIDL effect HAL v3向けです。** SoC名だけでは対応を判定できず、すべての端末で動く汎用モジュールではありません。現在の機能一式には同梱v0.31.1を使用してください。クイックFXにはAPKとモジュールの両方の更新・再起動が必要です。
+**同梱AIDL版はAndroid 16・arm64・AIDL effect HAL v3向け、HIDL版はarm64のHIDL/legacy effect HAL向けです。** SoC名だけでは対応を判定できず、すべての端末で動く汎用モジュールではありません。現在の機能一式と低音上限の修正には同梱v0.32を使用してください。クイックFXにはAPKとモジュールの両方の更新・再起動が必要です。
 
 1. ReleasesのAPKをインストールします。同じアプリID・署名での上書き更新は既存設定を引き継ぎます。
 2. アプリを開き、通知を許可します。再起動後の自動開始を使う場合はバッテリー最適化の除外も設定します。
@@ -216,7 +225,7 @@ v0.34では、個別EQがセッション検出用root設定のOFFで停止して
 
 dBFSはデジタル信号の値で、音圧dBや振動量ではありません。上限・自動調整・音量均等化は、すべての曲を完全に同じ聴感へ揃えたり、既に割れた音を修復したりする機能ではありません。小さい音量から調整してください。共通段を重ねると処理量も増えます。
 
-低域上限の経路は約3ms、音量均等化は有効段ごとに約5msの先読み、IRSは有効な畳み込み段ごとに512サンプルの遅延があります。処理品質や空間エフェクトにも遅延があり、モーターと出力バッファにも遅延があります。ゼロ遅延・全端末/全プレーヤー/全他社エフェクトとの共存は保証できません。
+低域上限の経路は48kHz時で約18ms、音量均等化は有効段ごとに約5msの先読み、IRSは有効な畳み込み段ごとに512サンプルの遅延があります。処理品質や空間エフェクトにも遅延があり、モーターと出力バッファにも遅延があります。ゼロ遅延・全端末/全プレーヤー/全他社エフェクトとの共存は保証できません。
 
 v0.31の追加ブーストは独立したPCM/制御試験と画面操作で検証しました。反映にはAPK更新後の再起動が必要で、AIDLモジュールはv0.30と同一です。v0.30では、全設定復元の連続操作によるクラッシュを修正し、同一形式通知時のDSP継続と停止・再開時の内部状態を検証しました。Java/Android回帰20スイート、ネイティブ14スイート、独立AIDL/FMQ試験、14画面条件、461項目の全設定プリセット/バックアップ復元を確認しました。独立した振動用出力中に既存音楽DSPが有効であることはv0.29で確認しています。今回のv0.30は独立テストで検証し、使用中のAPK・モジュールは変更していません。これは試験範囲での結果であり、機械的な発音・物理同期・実USB DAC/SRC回避・任意環境の不具合ゼロの保証ではありません。
 
@@ -229,7 +238,15 @@ v0.31の追加ブーストは独立したPCM/制御試験と画面操作で検�
 <a id="en"></a>
 ## English
 
-Earpiece EQ adjusts the earpiece and bottom speaker independently. With external outputs, it adjusts left and right channels. Common EQ, bass, FX and HiFi stages can be stacked with individual processing. This manual describes **v0.43-module-text**.
+Earpiece EQ adjusts the earpiece and bottom speaker independently. With external outputs, it adjusts left and right channels. Common EQ, bass, FX and HiFi stages can be stacked with individual processing. This manual describes **v0.44-bass-fix**.
+
+### Bass ceiling fixes in v0.44
+
+- Fixes bass leaking around the limited path and an unwanted phase change when enabling the ceiling on only one side, even below its threshold. Uses a phase-aligned complementary split; tests now measure actual output, not only an internal limited branch.
+- Individual and common ceilings remain stackable; the stricter per-side setting is enforced once. Update the **APK and matching v0.32 module, then reboot**. Both AIDL and HIDL builds share the fix; install only the matching one. Existing settings/presets are retained.
+- The bass path has equal fixed delay on both channels, about 18ms/848 samples at 48kHz, including a bypassed side. Stacking ceilings does not double it. Haptic-only observation without audio DSP retains same-sample passthrough.
+- The output peak meter covers the full spectrum: high-frequency content can exceed the bass ceiling without violating the low-band limit. The crossover has a transition above 250Hz.
+- Verification: 27 JVM/26 on-device/17 native suites, 29 isolated AIDL/FMQ checks, 7 HIDL C-ABI checks, UBSan, controller order/lease races, and 36 full restores across six UI conditions. Ordinary playback after reboot, HIDL device registration, physical sound pressure/haptic timing and USB DAC behavior are not established by these tests.
 
 ### Wording update in v0.43
 
@@ -276,7 +293,7 @@ Extra vibration boost now reaches 2000% (up to 21×). Existing values, switches 
 | Automatic external device identification | Android 13+ media routing information |
 | USB rate follow | Root, Android 14+, compatible USB output and active companion DSP on that output |
 
-**The bundled module targets Android 16, arm64 and AIDL effect HAL v3.** SoC branding alone cannot determine compatibility; this is not a universal module. Use bundled v0.31.1 for the current feature set. Quick FX requires both APK and module updates followed by a reboot.
+**The bundled AIDL build targets Android 16, arm64 and AIDL effect HAL v3; the HIDL build targets arm64 HIDL/legacy effect HALs.** SoC branding alone cannot determine compatibility; this is not a universal module. Use bundled v0.32 for the current feature set and corrected bass ceilings. Quick FX requires both APK and module updates followed by a reboot.
 
 1. Install the APK from Releases. Updating with the same app ID and signature preserves existing settings.
 2. Open the app and allow notifications. For automatic startup, also review battery optimization exemptions.
@@ -424,7 +441,7 @@ v0.34 fixes individual EQ being blocked when root-assisted session scanning is O
 
 Digital dBFS is not acoustic sound pressure or motor displacement. Ceilings, automatic adjustment and leveling cannot guarantee identical perceived loudness or repair existing distortion. Start at low volume. Stacking stages increases processing.
 
-The bass ceiling path has about 3ms latency; an active leveler adds about 5ms look-ahead per stage; IRS adds 512 samples per active convolution stage. Quality/spatial effects, motor response and output buffers also introduce latency. Zero latency and universal device/player/third-party effect compatibility are not guaranteed.
+The bass ceiling path has about 18ms latency at 48kHz; an active leveler adds about 5ms look-ahead per stage; IRS adds 512 samples per active convolution stage. Quality/spatial effects, motor response and output buffers also introduce latency. Zero latency and universal device/player/third-party effect compatibility are not guaranteed.
 
 v0.31 adds vibration boost verified with isolated PCM/control tests and UI operations. Reboot after updating the APK to load the new root controller; the AIDL module remains identical to v0.30. v0.30 fixes repeated full-settings restoration crashes and verifies DSP continuity on identical configuration updates and clean STOP/START histories. Verification covered 20 Java/Android regression suites, 14 native suites, isolated AIDL/FMQ tests, 14 UI conditions and restoration of 461 typed settings through full presets/backups. The earlier v0.29 device check retained active music DSP during a separate haptic stream. v0.30 was tested in isolation without replacing the running APK/module. These results do not establish mechanical sound/synchronization, physical USB DAC/SRC bypass or bug-free behavior in every environment.
 
@@ -437,7 +454,15 @@ This repository distributes documentation and compiled releases. **Application s
 <a id="zh"></a>
 ## 简体中文
 
-Earpiece EQ 可分别调整 Android 设备的听筒侧与底部扬声器。使用外部输出时，可分别调整左、右声道。共用 EQ、低音、音效与 HiFi 级可以与独立处理叠加。本说明适用于 **v0.43-module-text**。
+Earpiece EQ 可分别调整 Android 设备的听筒侧与底部扬声器。使用外部输出时，可分别调整左、右声道。共用 EQ、低音、音效与 HiFi 级可以与独立处理叠加。本说明适用于 **v0.44-bass-fix**。
+
+### v0.44 低音上限修复
+
+- 修复低音从未受限路径绕过上限，以及仅开启一侧时，即使音量未到阈值也改变相位的问题。改用保相的互补频段分离，并增加实际输出电平测试，而非仅检测内部受限分支。
+- 独立与共用上限仍可叠加，每侧仅应用更严格的值一次。需要**更新APK及匹配的v0.32模块并重启**，AIDL/HIDL共用同一修正核心，请仅安装匹配的一种。保留设置及预设。
+- 48kHz时低音路径固定延迟约18ms/848采样，两侧相同，旁通侧也对齐；叠加上限不会增加第二级延迟。仅振动观察且无音频DSP时仍为同采样直通。
+- 输出峰值表显示全频段，高频可能高于低音上限，这并不意味着低频越限。250Hz以上存在分频过渡带。
+- 验证：27套JVM、26套设备回归、17套原生、29项独立AIDL/FMQ、7项HIDL C-ABI、UBSan、控制顺序/锁竞争，以及六种界面条件下36次全设置恢复。不等于保证重启后的日常听感、HIDL实机注册、实际声压/马达同步或USB DAC行为。
 
 ### v0.43 文案更新
 
@@ -484,7 +509,7 @@ Earpiece EQ 可分别调整 Android 设备的听筒侧与底部扬声器。使�
 | 外部设备自动识别 | Android 13 以上媒体路由信息 |
 | USB 采样率跟随 | root、Android 14 以上、兼容 USB 输出，以及同一输出上的有效专用 DSP |
 
-**附带模块面向 Android 16、arm64 和 AIDL effect HAL v3。** 不能仅按 SoC 品牌判断兼容性，也不是适用于所有设备的通用模块。当前完整功能请使用附带的 v0.31.1 模块。快捷音效需要更新 APK 和模块，然后重启设备。
+**附带AIDL版面向Android 16、arm64及AIDL effect HAL v3；HIDL版面向arm64的HIDL/传统effect HAL。** 不能仅按 SoC 品牌判断兼容性，也不是适用于所有设备的通用模块。当前完整功能及低音上限修正请使用附带的 v0.32 模块。快捷音效需要更新 APK 和模块，然后重启设备。
 
 1. 从 Releases 安装 APK。使用相同应用 ID 和签名覆盖更新，可保留已有设置。
 2. 打开应用并允许通知。若使用自动启动，也请检查电池优化豁免。
@@ -632,7 +657,7 @@ v0.34 修复关闭会话扫描 root 辅助时独立 EQ 无法启动的问题。�
 
 dBFS 是数字信号电平，不是声压或马达位移。上限、自动调整和音量均衡不能保证所有曲目听感完全一致，也不能修复已有失真。请从较小音量开始；叠加更多级会增加处理量。
 
-低音上限路径约有 3ms 延迟，每个有效音量均衡级约增加 5ms 前瞻，IRS 的每个有效卷积级增加 512 个采样。质量、空间音效、马达和输出缓冲也存在延迟。不保证零延迟，也不保证所有设备、播放器及其他应用音效兼容。
+低音上限路径在48kHz时约有18ms延迟，每个有效音量均衡级约增加 5ms 前瞻，IRS 的每个有效卷积级增加 512 个采样。质量、空间音效、马达和输出缓冲也存在延迟。不保证零延迟，也不保证所有设备、播放器及其他应用音效兼容。
 
 v0.31 新增振动增强，使用独立 PCM/控制测试及界面操作验证。更新 APK 后请重启以加载新版 root 控制器；AIDL 模块与 v0.30 相同。v0.30 修复重复恢复全部设置导致的崩溃，并验证相同格式通知下的 DSP 连续性与停止/启动时的状态清理。验证覆盖 20 套 Java/Android 回归、14 套原生测试、独立 AIDL/FMQ 测试、14 种界面条件，以及通过全设置预设/备份恢复 461 项带类型设置。此前 v0.29 的实机验证中，独立触觉输出运行时已有音乐 DSP 保持有效。本次 v0.30 使用独立测试，未替换正在运行的 APK 或模块。这些结果不证明机械发声/物理同步、实际 USB DAC/SRC 绕过或任意环境下没有缺陷。
 
