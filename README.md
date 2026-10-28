@@ -7,7 +7,11 @@
 <a id="ja"></a>
 ## 日本語
 
-Androidのイヤーピース側・下スピーカー側を別々に調整するオーディオアプリです。外部出力では左・右チャンネルを調整します。個別設定に加え、両側へ適用する共通EQ・共通低音・共通FX・共通HiFiを重ねて使えます。この説明は **v0.42-module-info** を対象にしています。
+Androidのイヤーピース側・下スピーカー側を別々に調整するオーディオアプリです。外部出力では左・右チャンネルを調整します。個別設定に加え、両側へ適用する共通EQ・共通低音・共通FX・共通HiFiを重ねて使えます。この説明は **v0.43-module-text** を対象にしています。
+
+### v0.43 の表記修正
+
+機能説明のモジュール表記を「AIDL(HIDL)」に統一しました。「v○○以上」の必要バージョン条件は維持しています。処理や設定の変更はありません。
 
 ### v0.42 の修正
 
@@ -44,7 +48,7 @@ HIDL版でモジュールの版数が「導入情報未取得」になる問題�
 |---|---|
 | アプリ・画面・設定保存 | Android 10以降。保存や画面操作自体にrootは不要 |
 | 個別EQ | Android標準のDynamicsProcessing。専用モジュールは不要。音声への適用可否は端末・ROM・プレーヤー次第 |
-| 共通EQ、個別/共通低音、メーター、追加FX、内部処理品質 | rootと専用AIDLモジュール |
+| 共通EQ、個別/共通低音、メーター、追加FX、内部処理品質 | rootと専用AIDL(HIDL)モジュール |
 | 音量均等化 / アップミックス / HiFi | rootとモジュールv0.21以上 / v0.22以上 / v0.25以上 |
 | 強弱連動の振動 / 音声波形モード | rootとモジュールv0.27以上 / v0.29以上、および対応モーター・振動音声出力 |
 | 外部出力の自動識別 | Android 13以降のメディア出力先情報 |
@@ -211,7 +215,11 @@ v0.31の追加ブーストは独立したPCM/制御試験と画面操作で検�
 <a id="en"></a>
 ## English
 
-Earpiece EQ adjusts the earpiece and bottom speaker independently. With external outputs, it adjusts left and right channels. Common EQ, bass, FX and HiFi stages can be stacked with individual processing. This manual describes **v0.42-module-info**.
+Earpiece EQ adjusts the earpiece and bottom speaker independently. With external outputs, it adjusts left and right channels. Common EQ, bass, FX and HiFi stages can be stacked with individual processing. This manual describes **v0.43-module-text**.
+
+### Wording update in v0.43
+
+Feature requirements now say AIDL(HIDL) module. All minimum-version requirements are retained. Processing and settings are unchanged.
 
 ### Fixed in v0.42
 
@@ -248,7 +256,7 @@ Extra vibration boost now reaches 2000% (up to 21×). Existing values, switches 
 |---|---|
 | App, interface and settings storage | Android 10+. These operations themselves need no root |
 | Individual EQ | Android DynamicsProcessing; no companion module. Audio support depends on the device, ROM and player |
-| Common EQ, individual/common bass, meters, advanced FX and internal quality | Root and the companion AIDL module |
+| Common EQ, individual/common bass, meters, advanced FX and internal quality | Root and the companion AIDL(HIDL) module |
 | Volume leveler / spatial upmix / HiFi | Root and module v0.21+ / v0.22+ / v0.25+ |
 | Intensity-following vibration / waveform mode | Root and module v0.27+ / v0.29+, plus compatible motor/haptic audio output |
 | Automatic external device identification | Android 13+ media routing information |
@@ -415,7 +423,11 @@ This repository distributes documentation and compiled releases. **Application s
 <a id="zh"></a>
 ## 简体中文
 
-Earpiece EQ 可分别调整 Android 设备的听筒侧与底部扬声器。使用外部输出时，可分别调整左、右声道。共用 EQ、低音、音效与 HiFi 级可以与独立处理叠加。本说明适用于 **v0.42-module-info**。
+Earpiece EQ 可分别调整 Android 设备的听筒侧与底部扬声器。使用外部输出时，可分别调整左、右声道。共用 EQ、低音、音效与 HiFi 级可以与独立处理叠加。本说明适用于 **v0.43-module-text**。
+
+### v0.43 文案更新
+
+功能说明中的模块名称统一为 AIDL(HIDL)，保留所有最低版本要求。处理及设置不变。
 
 ### v0.42 修复
 
@@ -452,7 +464,7 @@ Earpiece EQ 可分别调整 Android 设备的听筒侧与底部扬声器。使�
 |---|---|
 | 应用、界面和设置保存 | Android 10 以上；这些操作本身无需 root |
 | 独立 EQ | Android DynamicsProcessing，无需专用模块；是否可应用取决于设备、ROM 和播放器 |
-| 共用 EQ、独立/共用低音、处理表、高级音效、内部质量 | root 与专用 AIDL 模块 |
+| 共用 EQ、独立/共用低音、处理表、高级音效、内部质量 | root 与专用 AIDL(HIDL) 模块 |
 | 音量均衡 / 空间上混 / HiFi | root 与 v0.21 以上 / v0.22 以上 / v0.25 以上模块 |
 | 强弱跟随振动 / 波形模式 | root 与 v0.27 以上 / v0.29 以上模块，以及兼容马达和触觉音频输出 |
 | 外部设备自动识别 | Android 13 以上媒体路由信息 |
