@@ -7,7 +7,13 @@
 <a id="ja"></a>
 ## 日本語
 
-Androidのイヤーピース側・下スピーカー側を別々に調整するオーディオアプリです。外部出力では左・右チャンネルを調整します。個別設定に加え、両側へ適用する共通EQ・共通低音・共通FX・共通HiFiを重ねて使えます。この説明は **v0.40-keepalive** を対象にしています。
+Androidのイヤーピース側・下スピーカー側を別々に調整するオーディオアプリです。外部出力では左・右チャンネルを調整します。個別設定に加え、両側へ適用する共通EQ・共通低音・共通FX・共通HiFiを重ねて使えます。この説明は **v0.41-dual** を対象にしています。
+
+### v0.41 の変更
+
+- **HIDL版モジュールを追加**：新しいAIDLエフェクトHALを使う端末向けのAIDL版に加え、旧来の（HIDL/レガシー）エフェクトHALを使う端末向けのモジュールを用意しました。2種類の端末パターンに対応します。アプリ内の「低音モジュール」から、AIDL版・HIDL版のどちらも書き出せます。お使いの端末のエフェクトHALに合う方だけを導入してください（両方は入れない）。どちらも同じUUID・同じ処理で、アプリの挙動は完全に同一です。
+- DSP本体を両モジュール共通のコアにまとめました。AIDL版は以前と1サンプルも変わらないこと（スモークテストのログがビット一致）、HIDL版は共通コアとサンプル単位で完全一致することを端末上で確認しています。
+- 既存の設定・プリセット・各機能（キープアライブ含む）は変更していません。
 
 ### v0.40 の変更
 
@@ -201,7 +207,13 @@ v0.31の追加ブーストは独立したPCM/制御試験と画面操作で検�
 <a id="en"></a>
 ## English
 
-Earpiece EQ adjusts the earpiece and bottom speaker independently. With external outputs, it adjusts left and right channels. Common EQ, bass, FX and HiFi stages can be stacked with individual processing. This manual describes **v0.40-keepalive**.
+Earpiece EQ adjusts the earpiece and bottom speaker independently. With external outputs, it adjusts left and right channels. Common EQ, bass, FX and HiFi stages can be stacked with individual processing. This manual describes **v0.41-dual**.
+
+### New in v0.41
+
+- **HIDL module added**: alongside the AIDL build (for devices with the newer AIDL effect HAL), there is now a build for devices using the legacy (HIDL) effect HAL — covering both device patterns. The Bass module card exports either the AIDL or the HIDL ZIP. Install only the one matching your device's effect HAL (not both). Both share the same UUID and identical DSP, so the app behaves exactly the same.
+- The DSP was consolidated into a single core shared by both front ends. On device, the AIDL build is byte-identical to before (smoke-test logs match), and the HIDL build is sample-identical to the shared core.
+- Existing settings, presets and features (including keep-alive) are unchanged.
 
 ### New in v0.40
 
@@ -395,7 +407,13 @@ This repository distributes documentation and compiled releases. **Application s
 <a id="zh"></a>
 ## 简体中文
 
-Earpiece EQ 可分别调整 Android 设备的听筒侧与底部扬声器。使用外部输出时，可分别调整左、右声道。共用 EQ、低音、音效与 HiFi 级可以与独立处理叠加。本说明适用于 **v0.40-keepalive**。
+Earpiece EQ 可分别调整 Android 设备的听筒侧与底部扬声器。使用外部输出时，可分别调整左、右声道。共用 EQ、低音、音效与 HiFi 级可以与独立处理叠加。本说明适用于 **v0.41-dual**。
+
+### v0.41 更新
+
+- **新增 HIDL 版模块**：除面向较新 AIDL 效果 HAL 设备的 AIDL 版外，新增面向使用旧（HIDL/传统）效果 HAL 设备的版本，覆盖两类设备。可在“低音模块”中分别导出 AIDL 版或 HIDL 版，请仅安装与设备效果 HAL 匹配的那一个（请勿同时安装）。两者 UUID 相同、处理完全一致，应用行为完全相同。
+- DSP 已整合为两种前端共用的核心。设备上验证：AIDL 版与此前逐比特一致（冒烟测试日志相同），HIDL 版与共用核心逐样本一致。
+- 已有设置、预设及功能（包括后台常驻）均未改变。
 
 ### v0.40 更新
 
