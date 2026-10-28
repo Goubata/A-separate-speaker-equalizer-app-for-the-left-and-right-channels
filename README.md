@@ -7,7 +7,13 @@
 <a id="ja"></a>
 ## 日本語
 
-Androidのイヤーピース側・下スピーカー側を別々に調整するオーディオアプリです。外部出力では左・右チャンネルを調整します。個別設定に加え、両側へ適用する共通EQ・共通低音・共通FX・共通HiFiを重ねて使えます。この説明は **v0.39-haptic** を対象にしています。
+Androidのイヤーピース側・下スピーカー側を別々に調整するオーディオアプリです。外部出力では左・右チャンネルを調整します。個別設定に加え、両側へ適用する共通EQ・共通低音・共通FX・共通HiFiを重ねて使えます。この説明は **v0.40-keepalive** を対象にしています。
+
+### v0.40 の変更
+
+- **常駐の強化**：rootの見守りが、メモリ不足・タスク削除・強制停止でアプリやサービスが終了しても数秒で処理を再開します。通知を非表示にしても処理は続きます（Androidの仕様上、常駐サービスには通知の登録が必要ですが、表示しない設定にできます）。省電力（Doze）・バックグラウンド制限・待機バケットからも自動で除外します。設定の「自動起動とバッテリー」でON/OFFでき、初期状態はONです。処理をOFFにすると見守りも止まります。
+- アプリの再起動・更新後に、動作中のrootコントローラーを重複して起動し続けていた問題を修正しました（音声への影響はありませんでしたが、無駄な起動で電池を消費していました）。
+- 既存の設定・プリセット・DSP・モジュール（v0.31.1）は変更していません。
 
 ### v0.39 の変更
 
@@ -195,7 +201,13 @@ v0.31の追加ブーストは独立したPCM/制御試験と画面操作で検�
 <a id="en"></a>
 ## English
 
-Earpiece EQ adjusts the earpiece and bottom speaker independently. With external outputs, it adjusts left and right channels. Common EQ, bass, FX and HiFi stages can be stacked with individual processing. This manual describes **v0.39-haptic**.
+Earpiece EQ adjusts the earpiece and bottom speaker independently. With external outputs, it adjusts left and right channels. Common EQ, bass, FX and HiFi stages can be stacked with individual processing. This manual describes **v0.40-keepalive**.
+
+### New in v0.40
+
+- **Keep-alive**: a root supervisor resumes processing within seconds if the app or service is killed (low memory, swiped away, force-stopped). Processing continues with the notification hidden (Android requires a registered notification for a persistent service, but you can choose not to show it). Doze, background restrictions and standby buckets are exempted automatically. Toggle it in Settings → Startup & battery (ON by default); turning processing OFF also stops the supervisor.
+- Fixed repeated duplicate launches of already-running root controllers after an app restart/update (no audible effect, but wasted battery).
+- Existing settings, presets, DSP and the module (v0.31.1) are unchanged.
 
 ### New in v0.39
 
@@ -383,7 +395,13 @@ This repository distributes documentation and compiled releases. **Application s
 <a id="zh"></a>
 ## 简体中文
 
-Earpiece EQ 可分别调整 Android 设备的听筒侧与底部扬声器。使用外部输出时，可分别调整左、右声道。共用 EQ、低音、音效与 HiFi 级可以与独立处理叠加。本说明适用于 **v0.39-haptic**。
+Earpiece EQ 可分别调整 Android 设备的听筒侧与底部扬声器。使用外部输出时，可分别调整左、右声道。共用 EQ、低音、音效与 HiFi 级可以与独立处理叠加。本说明适用于 **v0.40-keepalive**。
+
+### v0.40 更新
+
+- **后台常驻增强**：应用或服务因内存不足、从最近任务移除或强制停止而结束时，root 守护会在几秒内恢复处理。隐藏通知后处理仍会继续（Android 要求常驻服务注册通知，但可设置为不显示）。自动豁免省电（Doze）、后台限制和待机分组。可在“设置 → 启动与电池”中开关，默认开启；关闭处理时守护也会停止。
+- 修复应用重启/更新后反复重复启动已在运行的 root 控制器的问题（不影响声音，但会浪费电量）。
+- 已有设置、预设、DSP 和模块（v0.31.1）均未改变。
 
 ### v0.39 更新
 
