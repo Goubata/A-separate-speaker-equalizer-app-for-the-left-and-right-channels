@@ -23,9 +23,20 @@
 
 ### モジュール0.32.1の互換性修正
 
-AIDL/HIDL両版で、読み取り専用vendorを指すリンクへのラベル変更を防止。ラベル設定失敗は警告として続行し、致命的な起動失敗はログに理由を記録します。APK v0.44はそのまま使用できます。適合するモジュール片方だけを更新して再起動してください。DSPは0.32と同一です。`skip_mount` / `skip_mountify` は独自のbind mountを使うため意図的です。通常のKernelSU/メタモジュールのマウント一覧だけで判断せず、`bass-module.log`のCompleted/Mergedと実際のマウント・HALロードを確認してください。
+AIDL/HIDL両版で、読み取り専用vendorを指すリンクへのラベル変更を防止。ラベル設定失敗は警告として続行し、致命的な起動失敗はログに理由を記録します。APK v0.44以降で使用できます。適合するモジュール片方だけを更新して再起動してください。DSPは0.32と同一です。`skip_mount` / `skip_mountify` は独自のbind mountを使うため意図的です。通常のKernelSU/メタモジュールのマウント一覧だけで判断せず、`bass-module.log`のCompleted/Mergedと実際のマウント・HALロードを確認してください。
 
-Androidのイヤーピース側・下スピーカー側を別々に調整するオーディオアプリです。外部出力では左・右チャンネルを調整します。個別設定に加え、両側へ適用する共通EQ・共通低音・共通FX・共通HiFiを重ねて使えます。この説明は **v0.44-bass-fix** を対象にしています。
+Androidのイヤーピース側・下スピーカー側を別々に調整するオーディオアプリです。外部出力では左・右チャンネルを調整します。個別設定に加え、両側へ適用する共通EQ・共通低音・共通FX・共通HiFiを重ねて使えます。この説明は **v0.45-volume-profiles** を対象にしています。
+
+### v0.45 音量ごとの設定
+
+- 「設定 → 音量ごとのオーディオ設定」をONにすると、現在の出力設定をメディア音量の全段階へコピーします。以降は音量変更イベントを受けると、変更前の段階を保存して変更先をすぐに反映します。連続して音量を変えた場合も最新段階へ追従します。出力先ごとに別々に保存します。
+- 個別/共通EQ・低音、追加FX・HiFi・音量均等化・クイックFX・処理品質など、その出力先の音声設定を段階ごとに保持します。プリセットを適用した状態もその音量の設定として保存されます。
+- OFFにすると段階切替を止め、保存済みの段階設定は保持します。全体の「音声処理を有効にする」は全音量共通の最上位スイッチです。これがOFFなら段階切替後もEQ・DSP・USB・振動の各処理は有効になりません。
+- 「全設定を保存」プリセットには音量別設定のON/OFFと各音量の保存内容も含まれ、復元後に各音量へ適用されます。既存の名前付きEQプリセットは変更しません。
+- 既知の外部出力にも接続先ごとの音量設定を保存できます。出力先を識別できない場合や既存の外部出力処理停止中は、誤適用防止のため操作をロックします。
+- APKのみの更新です。DSPは変更していません。APKには現行のAIDL/HIDL v0.32.1互換修正済みモジュールZIPを同梱します。既にv0.32.1をご利用ならモジュール更新は不要です。旧v0.32からの更新時にvendorラベル書込み問題が起きる端末では同梱版へ更新してください。v0.44から設定・プリセットを引き継ぐことを実機で確認しました。
+
+検証：設定画面の日本語・英語・中国語、14条件の画面/出力状態、音量スロットの初回複製・独立保存/復元・全設定プリセット往復・破損データ復旧を確認。実機ではAndroidメディア音量を変更し、常駐サービスによる検知、連続12回の高速変更、段階別EQ/FX設定の保持・復元、元音量への復帰を確認しました。設定切替と音声更新要求は試験端末で32msでした。全体処理OFF時にEQセッションが0件で、root DSP・USB・振動も無効のままでした。既存アプリ更新後の保存設定ファイルはバイト単位で一致しました。
 
 ### v0.44 の低音上限修正
 
@@ -244,9 +255,20 @@ v0.31の追加ブーストは独立したPCM/制御試験と画面操作で検�
 
 ### Module 0.32.1 compatibility fix
 
-Both HAL variants avoid relabeling read-only vendor symlink targets. Context failures warn and continue; fatal startup failures log a reason. Keep APK v0.44, update only your matching module and reboot. DSP binaries match v0.32. `skip_mount` / `skip_mountify` are intentional: startup performs manual bind mounts. Check Completed/Merged in `bass-module.log`, actual mounts and HAL loading rather than normal KernelSU/metamodule mount listings alone.
+Both HAL variants avoid relabeling read-only vendor symlink targets. Context failures warn and continue; fatal startup failures log a reason. APK v0.44 or later is compatible; update only your matching module and reboot. DSP binaries match v0.32. `skip_mount` / `skip_mountify` are intentional: startup performs manual bind mounts. Check Completed/Merged in `bass-module.log`, actual mounts and HAL loading rather than normal KernelSU/metamodule mount listings alone.
 
-Earpiece EQ adjusts the earpiece and bottom speaker independently. With external outputs, it adjusts left and right channels. Common EQ, bass, FX and HiFi stages can be stacked with individual processing. This manual describes **v0.44-bass-fix**.
+Earpiece EQ adjusts the earpiece and bottom speaker independently. With external outputs, it adjusts left and right channels. Common EQ, bass, FX and HiFi stages can be stacked with individual processing. This manual describes **v0.45-volume-profiles**.
+
+### v0.45 — Settings by media volume
+
+- Turn on **Settings → Audio settings by media volume** to copy the current output settings to every media-volume step. System volume-change events immediately save the previous step and restore the selected step. Rapid consecutive changes settle on the latest level. Every output device has its own set of steps.
+- Each step retains that output's individual/shared EQ and bass, advanced FX, HiFi, leveler, Quick FX, processing quality and other saved audio settings. A preset's applied state is saved with the active volume step.
+- Turning this feature OFF stops switching and keeps the saved steps. **Enable audio processing** remains the app-wide master switch: when it is OFF, volume changes cannot enable EQ, DSP, USB or vibration processing.
+- A **Full Settings** preset includes the feature's ON/OFF state and every saved volume step, then restores them for later use. Existing named EQ preset libraries are kept.
+- Known external outputs can keep separate volume steps. Editing is locked when Android cannot identify one output or when external processing is paused, preventing settings from applying to an uncertain route.
+- This is an APK-only update. The DSP is unchanged. The APK bundles the current AIDL/HIDL v0.32.1 modules with the vendor-label compatibility fix. Devices already using v0.32.1 do not need a module update; devices affected by the known vendor-label write issue on v0.32 can update to the bundled ZIP. Upgrade from v0.44 was verified to retain settings and presets.
+
+Verification: Japanese, English and Chinese UI text and 14 UI/output conditions; initial copying, per-step isolation and restore, full-settings preset round-trip, and corrupt-data recovery. On device, system volume-change events were handled during 12 rapid consecutive changes; each volume step retained its EQ/FX settings and the original media volume was restored. Profile loading and audio-refresh scheduling took 32 ms on the test device. With the master OFF, there were zero EQ sessions and root DSP, USB and vibration stayed disabled. Existing app preference files were byte-identical immediately after upgrade.
 
 ### Bass ceiling fixes in v0.44
 
@@ -464,9 +486,20 @@ This repository distributes documentation and compiled releases. **Application s
 
 ### 模块0.32.1兼容性修复
 
-AIDL/HIDL 均避免修改指向只读 vendor 的符号链接目标标签。标签设置失败时警告并继续，致命启动失败记录原因。继续使用 APK v0.44，仅更新适合设备的一个模块并重启。DSP 与0.32相同。`skip_mount` / `skip_mountify` 是有意设置的，启动脚本自行 bind mount。请检查 `bass-module.log` 的 Completed/Merged、实际挂载及 HAL 加载，不能仅凭 KernelSU/元模块常规挂载列表判断。
+AIDL/HIDL 均避免修改指向只读 vendor 的符号链接目标标签。标签设置失败时警告并继续，致命启动失败记录原因。APK v0.44及以上版本均兼容；仅更新适合设备的一个模块并重启。DSP 与0.32相同。`skip_mount` / `skip_mountify` 是有意设置的，启动脚本自行 bind mount。请检查 `bass-module.log` 的 Completed/Merged、实际挂载及 HAL 加载，不能仅凭 KernelSU/元模块常规挂载列表判断。
 
-Earpiece EQ 可分别调整 Android 设备的听筒侧与底部扬声器。使用外部输出时，可分别调整左、右声道。共用 EQ、低音、音效与 HiFi 级可以与独立处理叠加。本说明适用于 **v0.44-bass-fix**。
+Earpiece EQ 可分别调整 Android 设备的听筒侧与底部扬声器。使用外部输出时，可分别调整左、右声道。共用 EQ、低音、音效与 HiFi 级可以与独立处理叠加。本说明适用于 **v0.45-volume-profiles**。
+
+### v0.45 按媒体音量保存设置
+
+- 在「设置 → 按媒体音量切换音频设置」中开启后，会将当前输出设置复制到所有媒体音量档位。收到系统音量变化事件后立即保存离开的档位并恢复目标档位；连续快速变化时会跟随最新档位。每个输出设备分别保存。
+- 各档位会保存该输出的独立/共用 EQ 与低音、高级音效、HiFi、音量均衡、快捷音效、处理质量等音频设置。应用预设后的状态也会保存到当前音量档位。
+- 关闭此功能会停止切换，但保留各档位数据。「启用音频处理」仍是全应用共用的总开关；关闭时，切换音量不会启用 EQ、DSP、USB 或振动处理。
+- 「全部设置」预设会保存此功能的开关状态和所有音量档位，并在恢复后继续应用。已有的命名 EQ 预设库会保留。
+- 可识别的外部输出也会分别保存音量档位。Android 无法识别单一输出或外部处理暂停时会锁定编辑，避免应用到不确定的输出。
+- 本次只更新 APK。DSP 未更改。APK 同捆当前已修复 vendor 标签兼容性的 AIDL/HIDL v0.32.1 模块。已使用 v0.32.1 的设备无需更新模块；若旧 v0.32 在设备上遇到 vendor 标签写入问题，可更新为同捆 ZIP。已验证从 v0.44 升级后保留现有设置和预设。
+
+验证：检查日语、英语和中文界面及14种界面/输出状态；验证初次复制、档位独立保存与恢复、全部设置预设往返和损坏数据恢复。实机上连续快速改变 Android 媒体音量12次，系统事件均能切换到最新档位并保持各档位 EQ/音效设置，最后恢复原音量。测试设备完成档位加载和音频刷新请求用时32毫秒。总开关关闭时 EQ 会话为0，root DSP、USB和振动均保持关闭。应用升级前后的设置文件逐字节一致。
 
 ### v0.44 低音上限修复
 
